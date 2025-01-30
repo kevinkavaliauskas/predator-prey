@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=Animal
+comment0.text=\n\ Common\ elements\ of\ foxes\ and\ rabbits.\n\n\ @author\ David\ J.\ Barnes\ and\ Michael\ K\u00F6lling\n\ @version\ 7.0\n
+comment1.params=location
+comment1.target=Animal(Location)
+comment1.text=\n\ Constructor\ for\ objects\ of\ class\ Animal.\n\ @param\ location\ The\ animal's\ location.\n
+comment2.params=currentField\ nextFieldState
+comment2.target=void\ act(Field,\ Field)
+comment2.text=\n\ Act.\n\ @param\ currentField\ The\ current\ state\ of\ the\ field.\n\ @param\ nextFieldState\ The\ new\ state\ being\ built.\n
+comment3.params=
+comment3.target=boolean\ isAlive()
+comment3.text=\n\ Check\ whether\ the\ animal\ is\ alive\ or\ not.\n\ @return\ true\ if\ the\ animal\ is\ still\ alive.\n
+comment4.params=
+comment4.target=void\ setDead()
+comment4.text=\n\ Indicate\ that\ the\ animal\ is\ no\ longer\ alive.\n
+comment5.params=
+comment5.target=Location\ getLocation()
+comment5.text=\n\ Return\ the\ animal's\ location.\n\ @return\ The\ animal's\ location.\n
+comment6.params=location
+comment6.target=void\ setLocation(Location)
+comment6.text=\n\ Set\ the\ animal's\ location.\n\ @param\ location\ The\ new\ location.\n
+numComments=7
