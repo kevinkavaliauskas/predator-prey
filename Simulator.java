@@ -9,6 +9,7 @@ import java.util.*;
  */
 public class Simulator
 {
+    // Testing git repo collaboration
     // Constants representing configuration information for the simulation.
     // The default width for the grid.
     private static final int DEFAULT_WIDTH = 120;
