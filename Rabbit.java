@@ -8,46 +8,35 @@ import java.util.Random;
  * @author David J. Barnes and Michael Kölling
  * @version 7.1
  */
-public class Rabbit extends Animal
+public class Rabbit extends Prey
 {
     // Characteristics shared by all rabbits (class variables).
-    // The age at which a rabbit can start to breed.
-    private static final int BREEDING_AGE = 5;
-    // The age to which a rabbit can live.
-    private static final int MAX_AGE = 40;
-    // The likelihood of a rabbit breeding.
-    private static final double BREEDING_PROBABILITY = 0.12;
-    // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 4;
+    
+    
+    
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
-    
-    // Individual characteristics (instance fields).
-    
-    // The rabbit's age.
-    private int age;
 
     /**
      * Create a new rabbit. A rabbit may be created with age
      * zero (a new born) or with a random age.
      * 
-     * @param randomAge If true, the rabbit will have a random age.
+     * @param randomAge If true, the rabbit will have random age.
      * @param location The location within the field.
      */
     public Rabbit(boolean randomAge, Location location)
     {
-        super(location);
-        age = 0;
+        super(location, 40, 0.12, 5, 4); //Constructor of prey class for rabbit class
         if(randomAge) {
-            age = rand.nextInt(MAX_AGE);
+            setAge(rand.nextInt(MAX_AGE));
         }
     }
     
     /**
      * This is what the rabbit does most of the time - it runs 
      * around. Sometimes it will breed or die of old age.
-     * @param currentField The field occupied.
-     * @param nextFieldState The updated field.
+     * @param currentField The field currently occupied.
+     * @param nextFieldState The field to update.
      */
     public void act(Field currentField, Field nextFieldState)
     {
@@ -59,7 +48,7 @@ public class Rabbit extends Animal
                 giveBirth(nextFieldState, freeLocations);
             }
             // Try to move into a free location.
-            if(! freeLocations.isEmpty()) {
+            if(!freeLocations.isEmpty()) {
                 Location nextLocation = freeLocations.get(0);
                 setLocation(nextLocation);
                 nextFieldState.placeAnimal(this, nextLocation);
@@ -74,7 +63,7 @@ public class Rabbit extends Animal
     @Override
     public String toString() {
         return "Rabbit{" +
-                "age=" + age +
+                "age=" + getAge() +
                 ", alive=" + isAlive() +
                 ", location=" + getLocation() +
                 '}';
@@ -84,10 +73,11 @@ public class Rabbit extends Animal
      * Increase the age.
      * This could result in the rabbit's death.
      */
-    private void incrementAge()
+    @Override
+    protected void incrementAge()
     {
-        age++;
-        if(age > MAX_AGE) {
+        super.incrementAge();
+        if(getAge() > MAX_AGE) {
             setDead();
         }
     }
@@ -95,15 +85,16 @@ public class Rabbit extends Animal
     /**
      * Check whether or not this rabbit is to give birth at this step.
      * New births will be made into free adjacent locations.
-     * @param freeLocations The locations that are free in the current field.
+     * @param nextFieldState The field to update.
+     * @param freeLocations The locations that are free in the field.
      */
-    private void giveBirth(Field nextFieldState, List<Location> freeLocations)
+
+    protected void giveBirth(Field nextFieldState, List<Location> freeLocations)
     {
         // New rabbits are born into adjacent locations.
-        // Get a list of adjacent free locations.
         int births = breed();
         if(births > 0) {
-            for (int b = 0; b < births && !freeLocations.isEmpty(); b++) {
+            for(int b = 0; b < births && !freeLocations.isEmpty(); b++) {
                 Location loc = freeLocations.remove(0);
                 Rabbit young = new Rabbit(false, loc);
                 nextFieldState.placeAnimal(young, loc);
@@ -116,24 +107,23 @@ public class Rabbit extends Animal
      * if it can breed.
      * @return The number of births (may be zero).
      */
-    private int breed()
+    @Override
+    protected int breed()
     {
-        int births;
+        int births = 0;
         if(canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
             births = rand.nextInt(MAX_LITTER_SIZE) + 1;
         }
-        else {
-            births = 0;
-        }
-        return births;
+        return births;  
     }
 
     /**
      * A rabbit can breed if it has reached the breeding age.
      * @return true if the rabbit can breed, false otherwise.
      */
-    private boolean canBreed()
+    @Override
+    protected boolean canBreed()
     {
-        return age >= BREEDING_AGE;
+        return getAge() >= BREEDING_AGE;
     }
 }
