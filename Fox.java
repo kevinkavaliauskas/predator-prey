@@ -15,7 +15,6 @@ public class Fox extends Predator
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
-    // Individual characteristics (instance fields).
     
 
     

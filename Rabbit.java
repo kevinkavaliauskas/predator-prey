@@ -10,12 +10,10 @@ import java.util.Random;
  */
 public class Rabbit extends Prey
 {
-    // Characteristics shared by all rabbits (class variables).
-    
-    
-    
+
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
+    private String gender;
 
     /**
      * Create a new rabbit. A rabbit may be created with age
@@ -27,10 +25,16 @@ public class Rabbit extends Prey
     public Rabbit(boolean randomAge, Location location)
     {
         super(location, 40, 0.12, 5, 4); //Constructor of prey class for rabbit class
+        this.gender = rand.nextBoolean() ? "female" : "male"; //Assigns a  random gender to the rabbit.
         if(randomAge) {
             setAge(rand.nextInt(MAX_AGE));
         }
     }
+    
+    public String getGender(){
+        return gender;
+    }
+    
     
     /**
      * This is what the rabbit does most of the time - it runs 
@@ -45,7 +49,7 @@ public class Rabbit extends Prey
             List<Location> freeLocations = 
                 nextFieldState.getFreeAdjacentLocations(getLocation());
             if(!freeLocations.isEmpty()) {
-                giveBirth(nextFieldState, freeLocations);
+                giveBirth(nextFieldState, freeLocations, currentField);
             }
             // Try to move into a free location.
             if(!freeLocations.isEmpty()) {
@@ -59,11 +63,31 @@ public class Rabbit extends Prey
             }
         }
     }
+    
+    private boolean isMaleNearby(Field currentField){
+        List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation());  //Gets all adjacent locations to check if there is a male rabbit nearby.
+        //Checks each adjacent location if there is a rabbit in each one. If there is a male rabbit in one, then breeding can occur.
+        for (Location location : adjacentLocations){
+            Animal animal = currentField.getAnimalAt(location); //Gets the animal at this location.
+            if (animal instanceof Rabbit && ((Rabbit) animal).getGender().equals("male")) {  //Checks if  the animal  is a male
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean isGenderFemale(){
+        if(this.getGender().equals("female")){
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public String toString() {
         return "Rabbit{" +
                 "age=" + getAge() +
+                ", gender=" + getGender() +
                 ", alive=" + isAlive() +
                 ", location=" + getLocation() +
                 '}';
@@ -89,12 +113,25 @@ public class Rabbit extends Prey
      * @param freeLocations The locations that are free in the field.
      */
 
-    protected void giveBirth(Field nextFieldState, List<Location> freeLocations)
+    protected void giveBirth(Field nextFieldState, List<Location> freeLocations, Field currentField)
     {
+        //If the rabbits gender  is not female, it cannot breed.
+        if (!isGenderFemale()){
+            System.out.println("Can't Breed");
+            return;
+            
+        }
+
+        // Check if there's a male rabbit nearby before attempting to breed
+        if (!isMaleNearby(currentField)) {
+            System.out.println("Can't Breed");
+            return; // No male nearby, so no breeding occurs
+        }
         // New rabbits are born into adjacent locations.
-        int births = breed();
-        if(births > 0) {
+        int births = breed(); //Triggers the breed method which checks if a rabbit can breed.
+        if(births > 0) { //If the breed method has provided a number of births greater than 0
             for(int b = 0; b < births && !freeLocations.isEmpty(); b++) {
+                System.out.println("Can Breed");
                 Location loc = freeLocations.remove(0);
                 Rabbit young = new Rabbit(false, loc);
                 nextFieldState.placeAnimal(young, loc);

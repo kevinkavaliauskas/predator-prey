@@ -78,7 +78,7 @@ public abstract class Prey extends Animal {
      * @param nextFieldState The field to update.
      * @param freeLocations The locations that are free in the field.
      */
-    protected abstract void giveBirth(Field nextFieldState, List<Location> freeLocations);
+    protected abstract void giveBirth(Field nextFieldState, List<Location> freeLocations, Field currentField);
 
 
     /**

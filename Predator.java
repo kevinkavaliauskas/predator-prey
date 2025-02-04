@@ -11,12 +11,12 @@ public abstract class Predator extends Animal
     // The Predator's age.
     protected int age;
     
-    // Characteristics shared by all foxes (class variables).
-    // The age at which a fox can start to breed.
+    // Characteristics shared by all Predators.
+    // The age at which a predator can start to breed.
     protected final int BREEDING_AGE;
-    // The age to which a fox can live.
+    // The age to which a predator can live.
     protected final int MAX_AGE;
-    // The likelihood of a fox breeding.
+    // The likelihood of a predator breeding.
     protected final double BREEDING_PROBABILITY;
     // The maximum number of births.
     protected final int MAX_LITTER_SIZE;
