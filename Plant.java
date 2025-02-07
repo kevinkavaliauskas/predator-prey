@@ -5,7 +5,7 @@
  * @author David J. Barnes and Michael Kölling
  * @version 7.0
  */
-public abstract class Plant
+public class Plant extends Entity
 {
     // Whether the plant is alive or not.
     private boolean alive;
@@ -20,10 +20,10 @@ public abstract class Plant
      * Constructor for objects of class Animal.
      * @param location The animal's location.
      */
-    public Plant(Location location)
+    public Plant(boolean alive, Location location)
     {
+        super(location);
         this.alive = true;
-        this.location = location;
     }
     
     /**

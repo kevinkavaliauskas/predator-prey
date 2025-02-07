@@ -20,9 +20,6 @@ public class Simulator
     // The probability that a rabbit will be created in any given position.
     private static final double RABBIT_CREATION_PROBABILITY = 0.08;  
     
-    // The probability that a rabbit will be created in any given position.
-    private static final double PLANT_CREATION_PROBABILITY = 0.5;  
-    
     // The Current State of Day/Night. Changes To true if day, changes 
     // to false if night.
     private Boolean isDay;
@@ -33,6 +30,8 @@ public class Simulator
     private int step;
     // A graphical view of the simulation.
     private final SimulatorView view;
+    // A weather object for the world
+    private Weather weather;
 
     /**
      * Construct a simulation field with default size.
@@ -58,6 +57,8 @@ public class Simulator
         
         field = new Field(depth, width);
         view = new SimulatorView(depth, width);
+        weather = new Weather();
+        weather.setRandomWeather();
         
         isDay = true; //Sets the simulator to start during the day.
 
@@ -101,10 +102,15 @@ public class Simulator
         // Use a separate Field to store the starting state of
         // the next step.
         Field nextFieldState = new Field(field.getDepth(), field.getWidth());
+        
+        if (step % 5 == 0) {
+            weather.setRandomWeather();
+        }
+        
 
         List<Entity> animals = field.getAnimals();
         for (Entity anAnimal : animals) {
-            anAnimal.act(field, nextFieldState, isDay);
+            anAnimal.act(field, nextFieldState, isDay, weather.getWeather());
         }
         
         // Replace the old state with the new one.
@@ -133,13 +139,15 @@ public class Simulator
         field.clear();
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
+                Location location = new Location(row, col);
+                Plant plant = new Plant(true, location);
+                field.placeAnimal(plant, location);
+                
                 if(rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
                     Fox fox = new Fox(true, location);
                     field.placeAnimal(fox, location);
                 }
                 else if(rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
                     Rabbit rabbit = new Rabbit(true, location);
                     field.placeAnimal(rabbit, location);
                 }
