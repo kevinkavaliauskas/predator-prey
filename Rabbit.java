@@ -118,7 +118,6 @@ public class Rabbit extends Prey
         //If the rabbits gender  is not female, it cannot breed.
         if (!isGenderFemale()){
             return;
-            
         }
 
         // Check if there's a male rabbit nearby before attempting to breed
