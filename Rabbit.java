@@ -117,21 +117,18 @@ public class Rabbit extends Prey
     {
         //If the rabbits gender  is not female, it cannot breed.
         if (!isGenderFemale()){
-            System.out.println("Can't Breed");
             return;
             
         }
 
         // Check if there's a male rabbit nearby before attempting to breed
         if (!isMaleNearby(currentField)) {
-            System.out.println("Can't Breed");
             return; // No male nearby, so no breeding occurs
         }
         // New rabbits are born into adjacent locations.
         int births = breed(); //Triggers the breed method which checks if a rabbit can breed.
         if(births > 0) { //If the breed method has provided a number of births greater than 0
             for(int b = 0; b < births && !freeLocations.isEmpty(); b++) {
-                System.out.println("Can Breed");
                 Location loc = freeLocations.remove(0);
                 Rabbit young = new Rabbit(false, loc);
                 nextFieldState.placeAnimal(young, loc);

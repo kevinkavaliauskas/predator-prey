@@ -18,7 +18,11 @@ public class Simulator
     // The probability that a fox will be created in any given grid position.
     private static final double FOX_CREATION_PROBABILITY = 0.02;
     // The probability that a rabbit will be created in any given position.
-    private static final double RABBIT_CREATION_PROBABILITY = 0.08;    
+    private static final double RABBIT_CREATION_PROBABILITY = 0.08;  
+    
+    // The Current State of Day/Night. Changes To true if day, changes 
+    // to false if night.
+    private Boolean isDay;
 
     // The current state of the field.
     private Field field;
@@ -51,6 +55,8 @@ public class Simulator
         
         field = new Field(depth, width);
         view = new SimulatorView(depth, width);
+        
+        isDay = true; //Sets the simulator to start during the day.
 
         reset();
     }
@@ -85,6 +91,10 @@ public class Simulator
     public void simulateOneStep()
     {
         step++;
+        
+        isDay = !isDay; //Flips the day/night state.
+        
+        System.out.println(isDay);
         // Use a separate Field to store the starting state of
         // the next step.
         Field nextFieldState = new Field(field.getDepth(), field.getWidth());
