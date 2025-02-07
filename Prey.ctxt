@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.target=Prey
+comment0.text=\n\ Write\ a\ description\ of\ class\ Predator\ here.\n\n\ @author\ (your\ name)\n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=location\ MAX_AGE\ BREEDING_PROBABILITY\ BREEDING_AGE\ MAX_LITTER_SIZE
+comment1.target=Prey(Location,\ int,\ double,\ int,\ int)
+comment1.text=\n\ Create\ a\ new\ prey\ animal.\n\ \n\ @param\ location\ The\ location\ within\ the\ field.\n\ @param\ MAX_AGE\ The\ maximum\ age\ that\ this\ prey\ can\ live\ too.\n\ @param\ BREEDING_PROBABILITY\ The\ probability\ of\ this\ type\ of\ prey\ breeding\n\ @param\ BREEDING_AGE\ The\ age\ at\ which\ this\ type\ of\ prey\ can\ breed\n\ @param\ MAX_LITTER_SIZE\ The\ maximum\ number\ of\ prey\ this\ type\ of\ prey\ will\ give\ birth\ too\n
+comment2.params=
+comment2.target=void\ incrementAge()
+comment2.text=\n\ Increase\ the\ age\ of\ the\ prey.\n\ Each\ prey\ type\ should\ implement\ their\ own\ death\ conditions.\n
+comment3.params=
+comment3.target=int\ getAge()
+comment3.text=\n\ Get\ the\ current\ age\ of\ the\ prey.\n\ @return\ The\ current\ age.\n
+comment4.params=age
+comment4.target=void\ setAge(int)
+comment4.text=\n\ Set\ the\ age\ of\ the\ prey.\n\ @param\ age\ The\ new\ age.\n
+comment5.params=
+comment5.target=boolean\ canBreed()
+comment5.text=\n\ Check\ whether\ or\ not\ this\ prey\ can\ breed.\n\ @return\ true\ if\ the\ prey\ can\ breed,\ false\ otherwise.\n
+comment6.params=nextFieldState\ freeLocations\ currentField\ isDay
+comment6.target=void\ giveBirth(Field,\ java.util.List,\ Field,\ boolean)
+comment6.text=\n\ Check\ whether\ or\ not\ this\ rabbit\ is\ to\ give\ birth\ at\ this\ step.\n\ New\ births\ will\ be\ made\ into\ free\ adjacent\ locations.\n\ @param\ nextFieldState\ The\ field\ to\ update.\n\ @param\ freeLocations\ The\ locations\ that\ are\ free\ in\ the\ field.\n
+comment7.params=
+comment7.target=int\ breed()
+comment7.text=\n\ Generate\ a\ number\ representing\ the\ number\ of\ births.\n\ @return\ The\ number\ of\ births\ (may\ be\ zero).\n
+numComments=8

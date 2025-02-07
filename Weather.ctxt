@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=Weather
+comment0.text=\n\ Write\ a\ description\ of\ class\ Weather\ here.\n\n\ @author\ (your\ name)\n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=
+comment1.target=void\ setRandomWeather()
+comment1.text=\n\ This\ generates\ a\ random\ weather\ from\ the\ available\ weather\ and\n\ stores\ it\ in\ the\ currentWeather\ variable\ so\ that\ it\ can\ be\ accessed.\n
+comment2.params=
+comment2.target=java.lang.String\ getWeather()
+numComments=3

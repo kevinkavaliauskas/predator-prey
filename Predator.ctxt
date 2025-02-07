@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=Predator
+comment0.text=\n\ Write\ a\ description\ of\ class\ Predator\ here.\n\n\ @author\ (your\ name)\n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=location\ BREEDING_AGE\ MAX_AGE\ BREEDING_PROBABILITY\ MAX_LITTER_SIZE
+comment1.target=Predator(Location,\ int,\ int,\ double,\ int)
+comment1.text=\n\ Constructor\ for\ objects\ of\ class\ Predator\n
+comment2.params=age
+comment2.target=void\ setAge(int)
+comment3.params=
+comment3.target=void\ incrementAge()
+comment4.params=
+comment4.target=int\ getAge()
+comment5.params=
+comment5.target=void\ incrementHunger()
+comment5.text=\n\ Make\ this\ fox\ more\ hungry.\ This\ could\ result\ in\ the\ fox's\ death.\n
+comment6.params=nextFieldState\ freeLocations
+comment6.target=void\ giveBirth(Field,\ java.util.List)
+comment7.params=
+comment7.target=boolean\ canBreed()
+comment8.params=
+comment8.target=int\ breed()
+numComments=9
