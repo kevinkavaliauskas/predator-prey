@@ -40,6 +40,7 @@ public class Field
     public void placeAnimal(Entity anAnimal, Location location)
     {
         assert location != null;
+        System.out.println("Fetching" + anAnimal);
         Object other = field.get(location);
         if(other != null) {
             animals.remove(other);
