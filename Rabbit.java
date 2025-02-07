@@ -42,7 +42,7 @@ public class Rabbit extends Prey
      * @param currentField The field currently occupied.
      * @param nextFieldState The field to update.
      */
-    public void act(Field currentField, Field nextFieldState, Boolean isDay)
+    public void act(Field currentField, Field nextFieldState, Boolean isDay, String weather)
     {
         incrementAge();
         if(isAlive()) {

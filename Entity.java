@@ -27,7 +27,7 @@ public abstract class Entity
      * @param currentField The current state of the field.
      * @param nextFieldState The new state being built.
      */
-    abstract public void act(Field currentField, Field nextFieldState, Boolean isDay);
+    abstract public void act(Field currentField, Field nextFieldState, Boolean isDay, String weather);
     
     /**
      * Check whether the animal is alive or not.

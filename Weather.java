@@ -36,7 +36,7 @@ public class Weather
         }
     }
     
-    public String getRandomWeather(){
+    public String getWeather(){
         return currentWeather;
     }
 }
