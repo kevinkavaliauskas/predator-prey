@@ -84,7 +84,7 @@ public class Simulator
         }
     }
     
-    public boolean getDayState(){
+    private boolean getDayState(){
         return isDay;
     }
     
@@ -98,14 +98,13 @@ public class Simulator
         
         isDay = !isDay; //Flips the day/night state.
         
-        System.out.println(isDay);
         // Use a separate Field to store the starting state of
         // the next step.
         Field nextFieldState = new Field(field.getDepth(), field.getWidth());
 
         List<Animal> animals = field.getAnimals();
         for (Animal anAnimal : animals) {
-            anAnimal.act(field, nextFieldState);
+            anAnimal.act(field, nextFieldState, isDay);
         }
         
         // Replace the old state with the new one.

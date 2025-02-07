@@ -45,7 +45,7 @@ public class Fox extends Predator
      * @param currentField The field currently occupied.
      * @param nextFieldState The updated field.
      */
-    public void act(Field currentField, Field nextFieldState)
+    public void act(Field currentField, Field nextFieldState, Boolean isDay)
     {
         incrementAge();
         incrementHunger();
