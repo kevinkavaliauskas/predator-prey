@@ -20,6 +20,9 @@ public class Simulator
     // The probability that a rabbit will be created in any given position.
     private static final double RABBIT_CREATION_PROBABILITY = 0.08;  
     
+    // The probability that a rabbit will be created in any given position.
+    private static final double PLANT_CREATION_PROBABILITY = 0.5;  
+    
     // The Current State of Day/Night. Changes To true if day, changes 
     // to false if night.
     private Boolean isDay;
@@ -122,7 +125,7 @@ public class Simulator
     }
     
     /**
-     * Randomly populate the field with foxes and rabbits.
+     * Randomly populate the field with foxes, rabbits and plants.
      */
     private void populate()
     {
