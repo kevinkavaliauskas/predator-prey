@@ -5,7 +5,7 @@ import java.util.List;
  * @author (your name)
  * @version (a version number or a date)
  */
-public abstract class Prey extends Animal {
+public abstract class Prey extends Entity {
     // Characteristics shared by all prey (class variables)
     // The age of the prey
     private int age;

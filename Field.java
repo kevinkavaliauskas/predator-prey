@@ -15,9 +15,9 @@ public class Field
     // The dimensions of the field.
     private final int depth, width;
     // Animals mapped by location.
-    private final Map<Location, Animal> field = new HashMap<>();
+    private final Map<Location, Entity> field = new HashMap<>();
     // The animals.
-    private final List<Animal> animals = new ArrayList<>();
+    private final List<Entity> animals = new ArrayList<>();
 
     /**
      * Represent a field of the given dimensions.
@@ -37,7 +37,7 @@ public class Field
      * @param anAnimal The animal to be placed.
      * @param location Where to place the animal.
      */
-    public void placeAnimal(Animal anAnimal, Location location)
+    public void placeAnimal(Entity anAnimal, Location location)
     {
         assert location != null;
         Object other = field.get(location);
@@ -53,7 +53,7 @@ public class Field
      * @param location Where in the field.
      * @return The animal at the given location, or null if there is none.
      */
-    public Animal getAnimalAt(Location location)
+    public Entity getAnimalAt(Location location)
     {
         return field.get(location);
     }
@@ -68,7 +68,7 @@ public class Field
         List<Location> free = new LinkedList<>();
         List<Location> adjacent = getAdjacentLocations(location);
         for(Location next : adjacent) {
-            Animal anAnimal = field.get(next);
+            Entity anAnimal = field.get(next);
             if(anAnimal == null) {
                 free.add(next);
             }
@@ -119,7 +119,7 @@ public class Field
     public void fieldStats()
     {
         int numFoxes = 0, numRabbits = 0;
-        for(Animal anAnimal : field.values()) {
+        for(Entity anAnimal : field.values()) {
             if(anAnimal instanceof Fox fox) {
                 if(fox.isAlive()) {
                     numFoxes++;
@@ -151,9 +151,9 @@ public class Field
     {
         boolean rabbitFound = false;
         boolean foxFound = false;
-        Iterator<Animal> it = animals.iterator();
+        Iterator<Entity> it = animals.iterator();
         while(it.hasNext() && ! (rabbitFound && foxFound)) {
-            Animal anAnimal = it.next();
+            Entity anAnimal = it.next();
             if(anAnimal instanceof Rabbit rabbit) {
                 if(rabbit.isAlive()) {
                     rabbitFound = true;
@@ -171,7 +171,7 @@ public class Field
     /**
      * Get the list of animals.
      */
-    public List<Animal> getAnimals()
+    public List<Entity> getAnimals()
     {
         return animals;
     }

@@ -102,8 +102,8 @@ public class Simulator
         // the next step.
         Field nextFieldState = new Field(field.getDepth(), field.getWidth());
 
-        List<Animal> animals = field.getAnimals();
-        for (Animal anAnimal : animals) {
+        List<Entity> animals = field.getAnimals();
+        for (Entity anAnimal : animals) {
             anAnimal.act(field, nextFieldState, isDay);
         }
         

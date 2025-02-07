@@ -101,7 +101,7 @@ public class Fox extends Predator
         Location foodLocation = null;
         while(foodLocation == null && it.hasNext()) {
             Location loc = it.next();
-            Animal animal = field.getAnimalAt(loc);
+            Entity animal = field.getAnimalAt(loc);
             if(animal instanceof Rabbit rabbit) {
                 if(rabbit.isAlive()) {
                     rabbit.setDead();

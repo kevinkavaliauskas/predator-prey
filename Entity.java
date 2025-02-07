@@ -5,7 +5,7 @@
  * @author David J. Barnes and Michael Kölling
  * @version 7.0
  */
-public abstract class Animal
+public abstract class Entity
 {
     // Whether the animal is alive or not.
     private boolean alive;
@@ -16,7 +16,7 @@ public abstract class Animal
      * Constructor for objects of class Animal.
      * @param location The animal's location.
      */
-    public Animal(Location location)
+    public Entity(Location location)
     {
         this.alive = true;
         this.location = location;
