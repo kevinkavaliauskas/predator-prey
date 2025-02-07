@@ -84,10 +84,7 @@ public class Simulator
         }
     }
     
-    private boolean getDayState(){
-        return isDay;
-    }
-    
+
     /**
      * Run the simulation from its current state for a single step.
      * Iterate over the whole field updating the state of each fox and rabbit.

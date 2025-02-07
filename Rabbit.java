@@ -24,7 +24,7 @@ public class Rabbit extends Prey
      */
     public Rabbit(boolean randomAge, Location location)
     {
-        super(location, 40, 0.12, 5, 4); //Constructor of prey class for rabbit class
+        super(location, 40, 0.3, 5, 8); //Constructor of prey class for rabbit class
         this.gender = rand.nextBoolean() ? "female" : "male"; //Assigns a  random gender to the rabbit.
         if(randomAge) {
             setAge(rand.nextInt(MAX_AGE));
@@ -49,7 +49,7 @@ public class Rabbit extends Prey
             List<Location> freeLocations = 
                 nextFieldState.getFreeAdjacentLocations(getLocation());
             if(!freeLocations.isEmpty()) {
-                giveBirth(nextFieldState, freeLocations, currentField);
+                giveBirth(nextFieldState, freeLocations, currentField, isDay);
             }
             // Try to move into a free location.
             if(!freeLocations.isEmpty()) {
@@ -113,8 +113,13 @@ public class Rabbit extends Prey
      * @param freeLocations The locations that are free in the field.
      */
 
-    protected void giveBirth(Field nextFieldState, List<Location> freeLocations, Field currentField)
+    protected void giveBirth(Field nextFieldState, List<Location> freeLocations, Field currentField, boolean isDay)
     {
+        //If it is not daytime, rabbits cannot breed.
+        if (!isDay){
+            return;
+        }
+        
         //If the rabbits gender  is not female, it cannot breed.
         if (!isGenderFemale()){
             return;
@@ -124,6 +129,9 @@ public class Rabbit extends Prey
         if (!isMaleNearby(currentField)) {
             return; // No male nearby, so no breeding occurs
         }
+        
+        
+        
         // New rabbits are born into adjacent locations.
         int births = breed(); //Triggers the breed method which checks if a rabbit can breed.
         if(births > 0) { //If the breed method has provided a number of births greater than 0
