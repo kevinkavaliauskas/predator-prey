@@ -68,7 +68,7 @@ public class Rabbit extends Prey
         List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation());  //Gets all adjacent locations to check if there is a male rabbit nearby.
         //Checks each adjacent location if there is a rabbit in each one. If there is a male rabbit in one, then breeding can occur.
         for (Location location : adjacentLocations){
-            Animal animal = currentField.getAnimalAt(location); //Gets the animal at this location.
+            Entity animal = currentField.getAnimalAt(location); //Gets the animal at this location.
             if (animal instanceof Rabbit && ((Rabbit) animal).getGender().equals("male")) {  //Checks if  the animal  is a male
                 return true;
             }

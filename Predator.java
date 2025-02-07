@@ -6,7 +6,7 @@ import java.util.List;
  * @author (your name)
  * @version (a version number or a date)
  */
-public abstract class Predator extends Animal
+public abstract class Predator extends Entity
 {
     // The Predator's age.
     protected int age;
