@@ -14,7 +14,7 @@ public class Plant extends Entity
     // The plant's height
     private int height;
     // Number of steps since last rain weather
-    private int lastRain;
+    private int lastRain = 0;
 
     /**
      * Constructor for objects of class Animal.
@@ -43,7 +43,7 @@ public class Plant extends Entity
                 setDead();
             }
         }
-        else if (weather.equals("sunny") || weather.equals("rain") && lastRain < 10){
+        else if (weather.equals("sunny") || weather.equals("rain") && lastRain < 100){
             // Plants can only grow in sun or rain
             grow();
         }
