@@ -66,8 +66,7 @@ public abstract class Predator extends Animal
     }
     
     protected abstract void giveBirth(Field nextFieldState, List<Location> freeLocations);
-    
-    
+
     
     protected abstract boolean canBreed();
     
