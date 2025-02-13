@@ -18,7 +18,9 @@ public class Simulator
     // The probability that a fox will be created in any given grid position.
     private static final double FOX_CREATION_PROBABILITY = 0.02;
     // The probability that a rabbit will be created in any given position.
-    private static final double RABBIT_CREATION_PROBABILITY = 0.08;  
+    private static final double RABBIT_CREATION_PROBABILITY = 0.08;
+    // The probability that a plant will be created in any given position.
+    private static final double PLANT_CREATION_PROBABILITY = 0.20;
     
     // The Current State of Day/Night. Changes To true if day, changes 
     // to false if night.
@@ -109,6 +111,7 @@ public class Simulator
         
 
         List<Entity> animals = field.getAnimals();
+        System.out.println(animals);
         for (Entity anAnimal : animals) {
             anAnimal.act(field, nextFieldState, isDay, weather.getWeather());
         }
@@ -139,19 +142,30 @@ public class Simulator
         field.clear();
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
+
+                double probability = rand.nextDouble(); //Generate one random number
                 Location location = new Location(row, col);
-                Plant plant = new Plant(true, location);
-                field.placeAnimal(plant, location);
                 
-                if(rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
+                if(probability <= FOX_CREATION_PROBABILITY) {
                     Fox fox = new Fox(true, location);
                     field.placeAnimal(fox, location);
+                    System.out.println("Fox Here");
+                    System.out.println(fox.getLocation());
                 }
-                else if(rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
+                else if(probability <= (FOX_CREATION_PROBABILITY + RABBIT_CREATION_PROBABILITY)) {
                     Rabbit rabbit = new Rabbit(true, location);
                     field.placeAnimal(rabbit, location);
+                    System.out.println("Rabbit Here");
+                    System.out.println(rabbit.getLocation());
                 }
-                // else leave the location empty.
+                else if(probability <= (FOX_CREATION_PROBABILITY + RABBIT_CREATION_PROBABILITY + PLANT_CREATION_PROBABILITY)) {
+                    Plant plant = new Plant(true, location);
+                    field.placeAnimal(plant, location);
+                    System.out.println("Plant Here");
+                    System.out.println(plant.getLocation());
+                    // else leave the location empty.
+                    
+                }
             }
         }
     }

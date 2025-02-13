@@ -10,8 +10,6 @@ public class Plant extends Entity
     // Whether the plant is alive or not.
     private boolean alive;
     // The plant's position.
-    private Location location;
-    // The plant's height
     private int height;
     // Number of steps since last rain weather
     private int lastRain = 0;
@@ -33,9 +31,7 @@ public class Plant extends Entity
      */
     public void act(Field currentField, Field nextFieldState, Boolean isDay, String weather)
     {
-        if (location != null) {
-            nextFieldState.placeAnimal(this, location);
-        }
+
         
         if (weather.equals("rain")) {
             lastRain = 0;
@@ -62,39 +58,13 @@ public class Plant extends Entity
         }
     }
     
-    /**
-     * Check whether the animal is alive or not.
-     * @return true if the animal is still alive.
-     */
-    public boolean isAlive()
-    {
-        return alive;
+
+
+    public String toString() {
+        return "Rabbit{" +
+                ", alive=" + isAlive() +
+                ", location=" + getLocation() +
+                '}';
     }
 
-    /**
-     * Indicate that the plant is no longer alive.
-     */
-    protected void setDead()
-    {
-        alive = false;
-        location = null;
-    }
-    
-    /**
-     * Return the plant's location.
-     * @return The plant's location.
-     */
-    public Location getLocation()
-    {
-        return location;
-    }
-    
-    /**
-     * Set the plant's location.
-     * @param location The new location.
-     */
-    protected void setLocation(Location location)
-    {
-        this.location = location;
-    }
 }
