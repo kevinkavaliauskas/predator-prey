@@ -23,8 +23,10 @@ public class SimulatorView extends JFrame
 
     private final String STEP_PREFIX = "Step: ";
     private final String POPULATION_PREFIX = "Population: ";
+    private final String WEATHER_PREFIX = "Weather: ";
     private final JLabel stepLabel;
     private final JLabel population;
+    private final JLabel weather;
     private final FieldView fieldView;
     
     // A map for storing colors for participants in the simulation
@@ -48,6 +50,7 @@ public class SimulatorView extends JFrame
         setTitle("Fox and Rabbit Simulation");
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
+        weather = new JLabel(WEATHER_PREFIX, JLabel.CENTER);
         
         setLocation(100, 50);
         
@@ -57,6 +60,7 @@ public class SimulatorView extends JFrame
         contents.add(stepLabel, BorderLayout.NORTH);
         contents.add(fieldView, BorderLayout.CENTER);
         contents.add(population, BorderLayout.SOUTH);
+        contents.add(weather, BorderLayout.SOUTH);
         pack();
         setVisible(true);
     }
@@ -91,7 +95,7 @@ public class SimulatorView extends JFrame
      * @param step Which iteration step it is.
      * @param field The field whose status is to be displayed.
      */
-    public void showStatus(int step, Field field)
+    public void showStatus(int step, Field field, Weather currentWeather)
     {
         if(!isVisible()) {
             setVisible(true);
@@ -117,6 +121,7 @@ public class SimulatorView extends JFrame
         stats.countFinished();
 
         population.setText(POPULATION_PREFIX + stats.getPopulationDetails(field));
+        weather.setText(WEATHER_PREFIX + currentWeather.getWeather());
         fieldView.repaint();
     }
 

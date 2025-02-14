@@ -111,7 +111,6 @@ public class Simulator
         
 
         List<Entity> animals = field.getAnimals();
-        System.out.println(animals);
         for (Entity anAnimal : animals) {
             anAnimal.act(field, nextFieldState, isDay, weather.getWeather());
         }
@@ -120,7 +119,7 @@ public class Simulator
         field = nextFieldState;
 
         reportStats();
-        view.showStatus(step, field);
+        view.showStatus(step, field, weather);
     }
         
     /**
@@ -130,7 +129,7 @@ public class Simulator
     {
         step = 0;
         populate();
-        view.showStatus(step, field);
+        view.showStatus(step, field, weather);
     }
     
     /**

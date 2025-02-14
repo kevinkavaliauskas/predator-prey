@@ -32,13 +32,6 @@ public class Plant extends Entity
     public void act(Field currentField, Field nextFieldState, Boolean isDay, String weather)
     {
 
- 
-        // Stay in the same location
-    
-        
-        nextFieldState.placeAnimal(this, this.getLocation());
-    
-        /*
         if (weather.equals("rain")) {
             lastRain = 0;
         }
@@ -47,6 +40,7 @@ public class Plant extends Entity
             // 10% chance of a plant dying due to extreme weather
             if (Math.random() < 0.1) {
                 setDead();
+                return;
             }
         }
         else if (weather.equals("sunny") || weather.equals("rain") && lastRain < 100){
@@ -54,8 +48,10 @@ public class Plant extends Entity
             grow();
         }
         
+        // Plants stay in the same location
+        nextFieldState.placeAnimal(this, this.getLocation());
+        
         lastRain++;
-        */
     }
     
     private void grow() {
