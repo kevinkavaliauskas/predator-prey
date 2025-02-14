@@ -22,7 +22,7 @@ public class Weather
         if (probabilityOfWeather <= 450){
             currentWeather = "rain";
         }
-        else if (probabilityOfWeather <= 450){
+        else if (probabilityOfWeather <= 940){
             currentWeather = "sunny";
         }
         else if (probabilityOfWeather <= 950){

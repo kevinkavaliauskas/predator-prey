@@ -6,22 +6,9 @@ import java.util.List;
  * @author (your name)
  * @version (a version number or a date)
  */
-public abstract class Predator extends Entity
+public abstract class Predator extends Animal
 {
-    // The Predator's age.
-    protected int age;
     
-    // Characteristics shared by all Predators.
-    // The age at which a predator can start to breed.
-    protected final int BREEDING_AGE;
-    // The age to which a predator can live.
-    protected final int MAX_AGE;
-    // The likelihood of a predator breeding.
-    protected final double BREEDING_PROBABILITY;
-    // The maximum number of births.
-    protected final int MAX_LITTER_SIZE;
-    // The food level of this predator
-    protected int foodLevel;
     
 
     /**
@@ -29,11 +16,8 @@ public abstract class Predator extends Entity
      */
     public Predator(Location location, int BREEDING_AGE, int MAX_AGE, double BREEDING_PROBABILITY, int MAX_LITTER_SIZE)
     {
-        super(location);
-        this.BREEDING_AGE = BREEDING_AGE;
-        this.MAX_AGE = MAX_AGE;
-        this.BREEDING_PROBABILITY = BREEDING_PROBABILITY;
-        this.MAX_LITTER_SIZE = MAX_LITTER_SIZE;
+        super(location, BREEDING_AGE, MAX_AGE, BREEDING_PROBABILITY, MAX_LITTER_SIZE);
+        
         age = 0;
     }
     
@@ -65,7 +49,7 @@ public abstract class Predator extends Entity
         }
     }
     
-    protected abstract void giveBirth(Field nextFieldState, List<Location> freeLocations);
+    protected abstract void giveBirth(Field nextFieldState, List<Location> freeLocations, Field currentField, boolean isDay);
 
     
     protected abstract boolean canBreed();

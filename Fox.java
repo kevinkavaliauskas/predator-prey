@@ -53,7 +53,7 @@ public class Fox extends Predator
             List<Location> freeLocations =
                     nextFieldState.getFreeAdjacentLocations(getLocation());
             if(! freeLocations.isEmpty()) {
-                giveBirth(nextFieldState, freeLocations);
+                giveBirth(nextFieldState, freeLocations, currentField, isDay);
             }
             // Move towards a source of food if found.
             Location nextLocation = findFood(currentField);
@@ -118,7 +118,7 @@ public class Fox extends Predator
      * New births will be made into free adjacent locations.
      * @param freeLocations The locations that are free in the current field.
      */
-    protected void giveBirth(Field nextFieldState, List<Location> freeLocations)
+    protected void giveBirth(Field nextFieldState, List<Location> freeLocations, Field currentField, boolean isDay)
     {
         // New foxes are born into adjacent locations.
         // Get a list of adjacent free locations.
