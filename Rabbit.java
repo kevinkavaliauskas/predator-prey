@@ -54,7 +54,7 @@ public class Rabbit extends Prey
             }
             // Try to move into a free location.
             if(!freeLocations.isEmpty()) {
-                Location nextLocation = freeLocations.get(0);
+                Location nextLocation = findFood(currentField);
                 setLocation(nextLocation);
                 nextFieldState.placeAnimal(this, nextLocation);
             }
