@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.Random;
+import java.util.Iterator;
 
 /**
  * A simple model of a rabbit.
@@ -62,6 +63,25 @@ public class Rabbit extends Prey
                 setDead();
             }
         }
+    }
+    
+    private Location findFood(Field field)
+    {
+        List<Location> adjacent = field.getAdjacentLocations(getLocation());
+        Iterator<Location> it = adjacent.iterator();
+        Location foodLocation = null;
+        while(foodLocation == null && it.hasNext()) {
+            Location loc = it.next();
+            Entity animal = field.getAnimalAt(loc);
+            if(animal instanceof Plant plant) {
+                if(plant.isAlive()) {
+                    plant.setDead();
+                    foodLevel = plant.getHeight();
+                    foodLocation = loc;
+                }
+            }
+        }
+        return foodLocation;
     }
     
     private boolean isMaleNearby(Field currentField){

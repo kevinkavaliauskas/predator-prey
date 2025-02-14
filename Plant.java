@@ -61,6 +61,10 @@ public class Plant extends Entity
         }
     }
     
+    public int getHeight(){
+        return height;
+    }
+    
 
 
     public String toString() {
