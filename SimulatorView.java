@@ -25,8 +25,7 @@ public class SimulatorView extends JFrame
     private final String POPULATION_PREFIX = "Population: ";
     private final String WEATHER_PREFIX = "Weather: ";
     private final JLabel stepLabel;
-    private final JLabel population;
-    private final JLabel weather;
+    private final JLabel generalStats;
     private final FieldView fieldView;
     
     // A map for storing colors for participants in the simulation
@@ -49,8 +48,7 @@ public class SimulatorView extends JFrame
 
         setTitle("Fox and Rabbit Simulation");
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
-        population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
-        weather = new JLabel(WEATHER_PREFIX, JLabel.CENTER);
+        generalStats = new JLabel(POPULATION_PREFIX + WEATHER_PREFIX, JLabel.CENTER);
         
         setLocation(100, 50);
         
@@ -59,8 +57,7 @@ public class SimulatorView extends JFrame
         Container contents = getContentPane();
         contents.add(stepLabel, BorderLayout.NORTH);
         contents.add(fieldView, BorderLayout.CENTER);
-        contents.add(population, BorderLayout.SOUTH);
-        contents.add(weather, BorderLayout.SOUTH);
+        contents.add(generalStats, BorderLayout.SOUTH);
         pack();
         setVisible(true);
     }
@@ -120,8 +117,7 @@ public class SimulatorView extends JFrame
         }
         stats.countFinished();
 
-        population.setText(POPULATION_PREFIX + stats.getPopulationDetails(field));
-        weather.setText(WEATHER_PREFIX + currentWeather.getWeather());
+        generalStats.setText(POPULATION_PREFIX + stats.getPopulationDetails(field) + WEATHER_PREFIX + currentWeather.getWeather());
         fieldView.repaint();
     }
 
