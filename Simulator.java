@@ -1,14 +1,13 @@
 import java.util.*;
 
 /**
- * A simple predator-prey simulator, based on a rectangular field containing 
+ * A simple predator-prey simulator, based on a rectangular field containing
  * rabbits and foxes.
  * 
  * @author David J. Barnes and Michael Kölling
  * @version 7.1
  */
-public class Simulator
-{
+public class Simulator {
     // Testing git repo collaboration
     // Constants representing configuration information for the simulation.
     // The default width for the grid.
@@ -21,8 +20,8 @@ public class Simulator
     private static final double RABBIT_CREATION_PROBABILITY = 0.16;
     // The probability that a plant will be created in any given position.
     private static final double PLANT_CREATION_PROBABILITY = 0.20;
-    
-    // The Current State of Day/Night. Changes To true if day, changes 
+
+    // The Current State of Day/Night. Changes To true if day, changes
     // to false if night.
     private Boolean isDay;
 
@@ -38,126 +37,141 @@ public class Simulator
     /**
      * Construct a simulation field with default size.
      */
-    public Simulator()
-    {
+    public Simulator() {
         this(DEFAULT_DEPTH, DEFAULT_WIDTH);
     }
-    
+
     /**
      * Create a simulation field with the given size.
+     * 
      * @param depth Depth of the field. Must be greater than zero.
      * @param width Width of the field. Must be greater than zero.
      */
-    public Simulator(int depth, int width)
-    {
-        if(width <= 0 || depth <= 0) {
+    public Simulator(int depth, int width) {
+        if (width <= 0 || depth <= 0) {
             System.out.println("The dimensions must be >= zero.");
             System.out.println("Using default values.");
             depth = DEFAULT_DEPTH;
             width = DEFAULT_WIDTH;
         }
-        
+
         field = new Field(depth, width);
         view = new SimulatorView(depth, width);
         weather = new Weather();
         weather.setRandomWeather();
-        
-        isDay = true; //Sets the simulator to start during the day.
+
+        isDay = true; // Sets the simulator to start during the day.
 
         reset();
     }
-    
+
     /**
-     * Run the simulation from its current state for a reasonably long 
+     * Run the simulation from its current state for a reasonably long
      * period (4000 steps).
      */
-    public void runLongSimulation()
-    {
+    public void runLongSimulation() {
         simulate(700);
     }
-    
+
     /**
      * Run the simulation for the given number of steps.
      * Stop before the given number of steps if it ceases to be viable.
+     * 
      * @param numSteps The number of steps to run for.
      */
-    public void simulate(int numSteps)
-    {
+    public void simulate(int numSteps) {
         reportStats();
-        for(int n = 1; n <= numSteps && field.isViable(); n++) {
+        for (int n = 1; n <= numSteps && field.isViable(); n++) {
             simulateOneStep();
-            delay(50);         // adjust this to change execution speed
+            delay(50); // adjust this to change execution speed
         }
     }
-    
 
     /**
      * Run the simulation from its current state for a single step.
      * Iterate over the whole field updating the state of each fox and rabbit.
      */
-    public void simulateOneStep()
-    {
+    public void simulateOneStep() {
         step++;
-        
-        isDay = !isDay; //Flips the day/night state.
-        
+
+        isDay = !isDay; // Flips the day/night state.
+
         // Use a separate Field to store the starting state of
         // the next step.
         Field nextFieldState = new Field(field.getDepth(), field.getWidth());
-        
+
         if (step % 5 == 0) {
             weather.setRandomWeather();
         }
-        
 
         List<Entity> animals = field.getAnimals();
         for (Entity anAnimal : animals) {
             anAnimal.act(field, nextFieldState, isDay, weather.getWeather());
         }
-        
+
+        // grow some new plants randomly
+        for (int row = 0; row < field.getDepth(); row++) {
+            for (int col = 0; col < field.getWidth(); col++) {
+
+                Location location = new Location(row, col);
+
+                // Get the animal at the location
+                Entity animal = nextFieldState.getAnimalAt(location);
+
+                // Check if the location is empty
+                if (animal == null) {
+                    double probability = Randomizer.getRandom().nextDouble(); // Generate one random number
+                    // If the probability is less than the plant creation probability, create a
+                    // plant
+                    if (probability <= PLANT_CREATION_PROBABILITY) {
+                        Plant plant = new Plant(true, location);
+                        nextFieldState.placeAnimal(plant, location);
+                    }
+                }
+
+            }
+        }
+
         // Replace the old state with the new one.
         field = nextFieldState;
 
         reportStats();
         view.showStatus(step, field, weather);
     }
-        
+
     /**
      * Reset the simulation to a starting position.
      */
-    public void reset()
-    {
+    public void reset() {
         step = 0;
         populate();
         view.showStatus(step, field, weather);
     }
-    
+
     /**
      * Randomly populate the field with foxes, rabbits and plants.
      */
-    private void populate()
-    {
+    private void populate() {
         Random rand = Randomizer.getRandom();
         field.clear();
-        for(int row = 0; row < field.getDepth(); row++) {
-            for(int col = 0; col < field.getWidth(); col++) {
+        for (int row = 0; row < field.getDepth(); row++) {
+            for (int col = 0; col < field.getWidth(); col++) {
 
-                double probability = rand.nextDouble(); //Generate one random number
+                double probability = rand.nextDouble(); // Generate one random number
                 Location location = new Location(row, col);
-                
-                if(probability <= FOX_CREATION_PROBABILITY) {
+
+                if (probability <= FOX_CREATION_PROBABILITY) {
                     Fox fox = new Fox(true, location);
                     field.placeAnimal(fox, location);
-                }
-                else if(probability <= (FOX_CREATION_PROBABILITY + RABBIT_CREATION_PROBABILITY)) {
+                } else if (probability <= (FOX_CREATION_PROBABILITY + RABBIT_CREATION_PROBABILITY)) {
                     Rabbit rabbit = new Rabbit(true, location);
                     field.placeAnimal(rabbit, location);
-                }
-                else if(probability <= (FOX_CREATION_PROBABILITY + RABBIT_CREATION_PROBABILITY + PLANT_CREATION_PROBABILITY)) {
+                } else if (probability <= (FOX_CREATION_PROBABILITY + RABBIT_CREATION_PROBABILITY
+                        + PLANT_CREATION_PROBABILITY)) {
                     Plant plant = new Plant(true, location);
                     field.placeAnimal(plant, location);
                     // else leave the location empty.
-                    
+
                 }
             }
         }
@@ -166,22 +180,20 @@ public class Simulator
     /**
      * Report on the number of each type of animal in the field.
      */
-    public void reportStats()
-    {
-        //System.out.print("Step: " + step + " ");
+    public void reportStats() {
+        // System.out.print("Step: " + step + " ");
         field.fieldStats();
     }
-    
+
     /**
      * Pause for a given time.
+     * 
      * @param milliseconds The time to pause for, in milliseconds
      */
-    private void delay(int milliseconds)
-    {
+    private void delay(int milliseconds) {
         try {
             Thread.sleep(milliseconds);
-        }
-        catch(InterruptedException e) {
+        } catch (InterruptedException e) {
             // ignore
         }
     }
