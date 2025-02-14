@@ -47,14 +47,19 @@ public class Rabbit extends Prey
     {
         incrementAge();
         if(isAlive()) {
-            List<Location> freeLocations = 
-                nextFieldState.getFreeAdjacentLocations(getLocation());
-            if(!freeLocations.isEmpty()) {
+            List<Location> freeLocations =
+                    nextFieldState.getFreeAdjacentLocations(getLocation());
+            if(! freeLocations.isEmpty()) {
                 giveBirth(nextFieldState, freeLocations, currentField, isDay);
             }
-            // Try to move into a free location.
-            if(!freeLocations.isEmpty()) {
-                Location nextLocation = freeLocations.get(0);
+            // Move towards a source of food if found.
+            Location nextLocation = findFood(currentField);
+            if(nextLocation == null && ! freeLocations.isEmpty()) {
+                // No food found - try to move to a free location.
+                nextLocation = freeLocations.remove(0);
+            }
+            // See if it was possible to move.
+            if(nextLocation != null) {
                 setLocation(nextLocation);
                 nextFieldState.placeAnimal(this, nextLocation);
             }

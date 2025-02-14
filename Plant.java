@@ -48,8 +48,10 @@ public class Plant extends Entity
             grow();
         }
         
-        // Plants stay in the same location
-        nextFieldState.placeAnimal(this, this.getLocation());
+        if (this.getLocation() != null) {
+            // Plants stay in the same location
+            nextFieldState.placeAnimal(this, this.getLocation());
+        }
         
         lastRain++;
     }
