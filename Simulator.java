@@ -149,20 +149,14 @@ public class Simulator
                 if(probability <= FOX_CREATION_PROBABILITY) {
                     Fox fox = new Fox(true, location);
                     field.placeAnimal(fox, location);
-                    System.out.println("Fox Here");
-                    System.out.println(fox.getLocation());
                 }
                 else if(probability <= (FOX_CREATION_PROBABILITY + RABBIT_CREATION_PROBABILITY)) {
                     Rabbit rabbit = new Rabbit(true, location);
                     field.placeAnimal(rabbit, location);
-                    System.out.println("Rabbit Here");
-                    System.out.println(rabbit.getLocation());
                 }
                 else if(probability <= (FOX_CREATION_PROBABILITY + RABBIT_CREATION_PROBABILITY + PLANT_CREATION_PROBABILITY)) {
                     Plant plant = new Plant(true, location);
                     field.placeAnimal(plant, location);
-                    System.out.println("Plant Here");
-                    System.out.println(plant.getLocation());
                     // else leave the location empty.
                     
                 }
