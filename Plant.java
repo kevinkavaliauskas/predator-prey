@@ -32,7 +32,13 @@ public class Plant extends Entity
     public void act(Field currentField, Field nextFieldState, Boolean isDay, String weather)
     {
 
+ 
+        // Stay in the same location
+    
         
+        nextFieldState.placeAnimal(this, this.getLocation());
+    
+        /*
         if (weather.equals("rain")) {
             lastRain = 0;
         }
@@ -49,6 +55,7 @@ public class Plant extends Entity
         }
         
         lastRain++;
+        */
     }
     
     private void grow() {
