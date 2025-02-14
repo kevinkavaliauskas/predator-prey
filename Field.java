@@ -39,7 +39,7 @@ public class Field
      */
     public void placeAnimal(Entity anAnimal, Location location)
     {
-        assert location != null;
+    ;
         Object other = field.get(location);
         if(other != null) {
             animals.remove(other);
