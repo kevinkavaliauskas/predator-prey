@@ -111,7 +111,6 @@ public class Simulator
         
 
         List<Entity> animals = field.getAnimals();
-        System.out.println(animals);
         for (Entity anAnimal : animals) {
             anAnimal.act(field, nextFieldState, isDay, weather.getWeather());
         }
