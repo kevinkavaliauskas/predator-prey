@@ -5,7 +5,25 @@ import java.util.List;
  * @author (your name)
  * @version (a version number or a date)
  */
-public abstract class Prey extends Animal {
+public abstract class Animal extends Entity {
+    // Characteristics shared by all prey (class variables)
+    // The age of the prey
+    protected int age;
+    
+    // The age to which a Prey can live.
+    protected final int MAX_AGE;
+    
+    // The likelihood of a Prey breeding.
+    protected final double BREEDING_PROBABILITY;
+    
+    // The age at which a Prey can start to breed.
+    protected final int BREEDING_AGE;
+    
+    // The maximum number of births.
+    protected final int MAX_LITTER_SIZE;
+    
+    //The Food level of this animal
+    protected int foodLevel;
 
     
     /**
@@ -17,8 +35,12 @@ public abstract class Prey extends Animal {
      * @param BREEDING_AGE The age at which this type of prey can breed
      * @param MAX_LITTER_SIZE The maximum number of prey this type of prey will give birth too
      */
-    public Prey(Location location, int BREEDING_AGE, int MAX_AGE, double BREEDING_PROBABILITY, int MAX_LITTER_SIZE) {
-        super(location, BREEDING_AGE, MAX_AGE, BREEDING_PROBABILITY, MAX_LITTER_SIZE);
+    public Animal(Location location, int BREEDING_AGE, int MAX_AGE, double BREEDING_PROBABILITY, int MAX_LITTER_SIZE) {
+        super(location);
+        this.MAX_AGE = MAX_AGE;
+        this.BREEDING_PROBABILITY = BREEDING_PROBABILITY;
+        this.BREEDING_AGE = BREEDING_AGE;
+        this.MAX_LITTER_SIZE = MAX_LITTER_SIZE;
         age = 0;
     }
 

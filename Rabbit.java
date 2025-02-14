@@ -24,7 +24,7 @@ public class Rabbit extends Prey
      */
     public Rabbit(boolean randomAge, Location location)
     {
-        super(location, 40, 0.3, 5, 8); //Constructor of prey class for rabbit class
+        super(location, 5, 40, 0.3, 8); //Constructor of prey class for rabbit class
         this.gender = rand.nextBoolean() ? "female" : "male"; //Assigns a  random gender to the rabbit.
         if(randomAge) {
             setAge(rand.nextInt(MAX_AGE));
