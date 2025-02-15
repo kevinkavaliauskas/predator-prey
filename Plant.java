@@ -1,4 +1,3 @@
-import java.util.Random;
 
 /**
  * Common elements of foxes and rabbits.
@@ -17,7 +16,7 @@ public class Plant extends Entity
     //The Max height a plant can grow too.
     private int maxHeight = 25;
     
-    private static final Random rand = Randomizer.getRandom();
+    
 
     /**
      * Constructor for objects of class Animal.

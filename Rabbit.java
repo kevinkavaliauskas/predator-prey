@@ -154,8 +154,12 @@ public class Rabbit extends Animal {
             return;
         }
         
-        
-        
+        //If infected there is a 50% chance it cannot breed. 
+        if (infected) {
+            if (rand.nextDouble() < 0.5) {
+                return;
+            }
+        }
 
         // Check if there's a male rabbit nearby before attempting to breed
         if (!isMaleNearby(currentField)) {

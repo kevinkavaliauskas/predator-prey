@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.Random;
 
 /**
  * Write a description of class Predator here.
@@ -29,8 +28,7 @@ public abstract class Animal extends Entity {
     
     //The gender of the animal.
     protected String gender;
-    
-    protected static final Random rand = Randomizer.getRandom();
+
     
     //The animal is infected with disease.
     protected boolean infected;

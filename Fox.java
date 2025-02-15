@@ -1,6 +1,5 @@
 import java.util.List;
 import java.util.Iterator;
-import java.util.Random;
 
 /**
  * A simple model of a fox.
@@ -12,8 +11,7 @@ import java.util.Random;
 public class Fox extends Animal
 {
     
-    // A shared random number generator to control breeding.
-    private static final Random rand = Randomizer.getRandom();
+
     
     
     // The food value of a single rabbit. In effect, this is the

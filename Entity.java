@@ -1,3 +1,4 @@
+import java.util.Random;
 
 /**
  * Common elements of foxes and rabbits.
@@ -11,6 +12,8 @@ public abstract class Entity
     private boolean alive;
     // The animal's position.
     private Location location;
+    
+    protected static final Random rand = Randomizer.getRandom();
 
     /**
      * Constructor for objects of class Animal.
