@@ -29,10 +29,12 @@ public class Fox extends Animal
      */
     public Fox(boolean randomAge, Location location)
     {
-        super(location, 15, 150, 0.08, 2);
+        super(location, 15, 150, 1, 8);
+        
         if(randomAge) {
             setAge(rand.nextInt(MAX_AGE));
         }
+        
         foodLevel = rand.nextInt(RABBIT_FOOD_VALUE);
     }
     
@@ -43,7 +45,7 @@ public class Fox extends Animal
      * @param currentField The field currently occupied.
      * @param nextFieldState The updated field.
      */
-    public void act(Field currentField, Field nextFieldState, Boolean isDay, String weather)
+    protected void act(Field currentField, Field nextFieldState, Boolean isDay, String weather)
     {
         incrementAge();
         incrementHunger();
@@ -92,7 +94,7 @@ public class Fox extends Animal
      * @param field The field currently occupied.
      * @return Where food was found, or null if it wasn't.
      */
-    private Location findFood(Field field)
+    protected Location findFood(Field field)
     {
         List<Location> adjacent = field.getAdjacentLocations(getLocation());
         Iterator<Location> it = adjacent.iterator();
@@ -116,19 +118,47 @@ public class Fox extends Animal
      * New births will be made into free adjacent locations.
      * @param freeLocations The locations that are free in the current field.
      */
-    protected void giveBirth(Field nextFieldState, List<Location> freeLocations, Field currentField, boolean isDay)
-    {
-        // New foxes are born into adjacent locations.
-        // Get a list of adjacent free locations.
-        int births = breed();
-        if(births > 0) {
-            for (int b = 0; b < births && ! freeLocations.isEmpty(); b++) {
+    protected void giveBirth(Field nextFieldState, List<Location> freeLocations, Field currentField, boolean isDay) {
+        // If the Foxes gender is not female, it cannot breed.
+        if (!isGenderFemale()) {
+            return;
+        }
+
+        // Check if there's a male Foxes nearby before attempting to breed
+        if (!isMaleNearby(currentField)) {
+            return; // No male nearby, so no breeding occurs
+        }
+
+        // New rabbits are born into adjacent locations.
+        int births = breed(); // Triggers the breed method which checks if a Fox can breed.
+        if (births > 0) { // If the breed method has provided a number of births greater than 0
+            System.out.println("Foxes Have Bred");
+            for (int b = 0; b < births && !freeLocations.isEmpty(); b++) {
                 Location loc = freeLocations.remove(0);
-                Fox young = new Fox(false, loc);
+                Rabbit young = new Rabbit(false, loc);
                 nextFieldState.placeAnimal(young, loc);
             }
         }
     }
+    
+    protected boolean isMaleNearby(Field currentField) {
+        List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation()); // Gets all adjacent
+                                                                                             // locations to check if
+                                                                                             // there is a male rabbit
+                                                                                             // nearby.
+        // Checks each adjacent location if there is a rabbit in each one. If there is a
+        // male rabbit in one, then breeding can occur.
+        for (Location location : adjacentLocations) {
+            Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
+            if (animal instanceof Fox && ((Fox) animal).getGender().equals("male")) { // Checks if the animal is a
+                                                                                            // male
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    
         
     /**
      * Generate a number representing the number of births,

@@ -72,8 +72,8 @@ public class Plant extends Entity
     }
     
     private void grow() {
-        height += 5;
-        if (height >= 25) {
+        height += 2;
+        if (height >= 10) {
             height = maxHeight;
         }
     }

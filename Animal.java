@@ -1,4 +1,6 @@
 import java.util.List;
+import java.util.Random;
+
 /**
  * Write a description of class Predator here.
  *
@@ -24,6 +26,11 @@ public abstract class Animal extends Entity {
     
     //The Food level of this animal
     protected int foodLevel;
+    
+    //The gender of the animal.
+    protected String gender;
+    
+    protected static final Random rand = Randomizer.getRandom();
 
     
     /**
@@ -41,8 +48,26 @@ public abstract class Animal extends Entity {
         this.BREEDING_PROBABILITY = BREEDING_PROBABILITY;
         this.BREEDING_AGE = BREEDING_AGE;
         this.MAX_LITTER_SIZE = MAX_LITTER_SIZE;
+        this.gender = rand.nextBoolean() ? "female" : "male"; // Assigns a random gender to the Animal.
         age = 0;
     }
+    
+    
+    public String getGender() {
+        return gender;
+    }
+    
+    protected abstract Location findFood(Field field);
+    
+    
+    protected boolean isGenderFemale() {
+        if (this.getGender().equals("female")) {
+            return true;
+        }
+        return false;
+    }
+    
+    protected abstract boolean isMaleNearby(Field currentField);
 
     
     /**
@@ -51,6 +76,9 @@ public abstract class Animal extends Entity {
      */
     protected void incrementAge() {
         age++;
+        if (age>MAX_AGE){
+            setDead();
+        }
     }
     
     protected void incrementHunger()

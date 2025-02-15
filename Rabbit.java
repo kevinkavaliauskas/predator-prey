@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.Random;
 import java.util.Iterator;
 
 /**
@@ -11,9 +10,6 @@ import java.util.Iterator;
  */
 public class Rabbit extends Animal {
 
-    // A shared random number generator to control breeding.
-    private static final Random rand = Randomizer.getRandom();
-    private String gender;
 
     /**
      * Create a new rabbit. A rabbit may be created with age
@@ -24,17 +20,16 @@ public class Rabbit extends Animal {
      */
     public Rabbit(boolean randomAge, Location location) {
         super(location, 5, 40, 1, 8); // Constructor of prey class for rabbit class
-        this.gender = rand.nextBoolean() ? "female" : "male"; // Assigns a random gender to the rabbit.
+        
         if (randomAge) {
             setAge(rand.nextInt(MAX_AGE));
         }
-        foodLevel = rand.nextInt(100);
+        foodLevel = rand.nextInt(20);
     }
+    
+    
 
-    public String getGender() {
-        return gender;
-    }
-
+    
     /**
      * This is what the rabbit does most of the time - it runs
      * around. Sometimes it will breed or die of old age.
@@ -67,7 +62,7 @@ public class Rabbit extends Animal {
         }
     }
 
-    private Location findFood(Field field) {
+    protected Location findFood(Field field) {
         List<Location> adjacent = field.getAdjacentLocations(getLocation());
         Iterator<Location> it = adjacent.iterator();
         Location foodLocation = null;
@@ -85,7 +80,7 @@ public class Rabbit extends Animal {
         return foodLocation;
     }
 
-    private boolean isMaleNearby(Field currentField) {
+    protected boolean isMaleNearby(Field currentField) {
         List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation()); // Gets all adjacent
                                                                                              // locations to check if
                                                                                              // there is a male rabbit
@@ -102,12 +97,7 @@ public class Rabbit extends Animal {
         return false;
     }
 
-    private boolean isGenderFemale() {
-        if (this.getGender().equals("female")) {
-            return true;
-        }
-        return false;
-    }
+    
 
     @Override
     public String toString() {
