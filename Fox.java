@@ -18,7 +18,7 @@ public class Fox extends Animal
     
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
-    private static final int RABBIT_FOOD_VALUE = 12;
+    private static final int RABBIT_FOOD_VALUE = 20;
 
     /**
      * Create a fox. A fox can be created as a new born (age zero
@@ -29,7 +29,7 @@ public class Fox extends Animal
      */
     public Fox(boolean randomAge, Location location)
     {
-        super(location, 15, 150, 1, 8);
+        super(location, 15, 150, 1, 8, false);
         
         if(randomAge) {
             setAge(rand.nextInt(MAX_AGE));
@@ -72,6 +72,7 @@ public class Fox extends Animal
             }
         }
     }
+    
 
         
 
@@ -128,6 +129,10 @@ public class Fox extends Animal
         if (!isMaleNearby(currentField)) {
             return; // No male nearby, so no breeding occurs
         }
+        
+        if (isDay) {
+            return; //Foxes can only breed at night.
+        }
 
         // New rabbits are born into adjacent locations.
         int births = breed(); // Triggers the breed method which checks if a Fox can breed.
@@ -135,7 +140,7 @@ public class Fox extends Animal
             System.out.println("Foxes Have Bred");
             for (int b = 0; b < births && !freeLocations.isEmpty(); b++) {
                 Location loc = freeLocations.remove(0);
-                Rabbit young = new Rabbit(false, loc);
+                Fox young = new Fox(false, loc);
                 nextFieldState.placeAnimal(young, loc);
             }
         }

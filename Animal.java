@@ -31,6 +31,9 @@ public abstract class Animal extends Entity {
     protected String gender;
     
     protected static final Random rand = Randomizer.getRandom();
+    
+    //The animal is infected with disease.
+    protected boolean infected;
 
     
     /**
@@ -42,18 +45,28 @@ public abstract class Animal extends Entity {
      * @param BREEDING_AGE The age at which this type of prey can breed
      * @param MAX_LITTER_SIZE The maximum number of prey this type of prey will give birth too
      */
-    public Animal(Location location, int BREEDING_AGE, int MAX_AGE, double BREEDING_PROBABILITY, int MAX_LITTER_SIZE) {
+    public Animal(Location location, int BREEDING_AGE, int MAX_AGE, double BREEDING_PROBABILITY, int MAX_LITTER_SIZE, boolean infected) {
         super(location);
         this.MAX_AGE = MAX_AGE;
         this.BREEDING_PROBABILITY = BREEDING_PROBABILITY;
         this.BREEDING_AGE = BREEDING_AGE;
         this.MAX_LITTER_SIZE = MAX_LITTER_SIZE;
         this.gender = rand.nextBoolean() ? "female" : "male"; // Assigns a random gender to the Animal.
+        this.infected = infected;
         age = 0;
     }
     
+    protected void getInfected(){
+        if (rand.nextDouble() <= 0.01){
+            infected = true;
+        }
+        else{
+            infected = false;
+        }
+    }
     
-    public String getGender() {
+    
+    protected String getGender() {
         return gender;
     }
     

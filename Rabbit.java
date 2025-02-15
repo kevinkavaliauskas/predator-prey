@@ -18,13 +18,13 @@ public class Rabbit extends Animal {
      * @param randomAge If true, the rabbit will have random age.
      * @param location  The location within the field.
      */
-    public Rabbit(boolean randomAge, Location location) {
-        super(location, 5, 40, 1, 8); // Constructor of prey class for rabbit class
+    public Rabbit(boolean randomAge, Location location, boolean infected) {
+        super(location, 5, 40, 1, 8, infected); // Constructor of prey class for rabbit class
         
         if (randomAge) {
             setAge(rand.nextInt(MAX_AGE));
         }
-        foodLevel = rand.nextInt(20);
+        foodLevel = rand.nextInt(20) + 5 ;
     }
     
     
@@ -40,25 +40,38 @@ public class Rabbit extends Animal {
     public void act(Field currentField, Field nextFieldState, Boolean isDay, String weather) {
         incrementAge();
         incrementHunger();
+        getInfected();
         if (isAlive()) {
             List<Location> freeLocations = nextFieldState.getFreeAdjacentLocations(getLocation());
             if (!freeLocations.isEmpty()) {
                 giveBirth(nextFieldState, freeLocations, currentField, isDay);
             }
             // Move towards a source of food if found.
-            Location nextLocation = findFood(currentField);
-            if (nextLocation == null && !freeLocations.isEmpty()) {
-                // No food found - try to move to a free location.
-                nextLocation = freeLocations.remove(0);
+            
+            Location nextLocation;
+            //Rabbits can only find food during the day.
+            if(isDay){
+                nextLocation = findFood(currentField);
+                
             }
+            else{
+                nextLocation = getLocation();
+            }
+            
+            if (nextLocation == null && !freeLocations.isEmpty()) {
+                    // No food found - try to move to a free location.
+                    nextLocation = freeLocations.remove(0);
+                }
             // See if it was possible to move.
             if (nextLocation != null) {
                 setLocation(nextLocation);
                 nextFieldState.placeAnimal(this, nextLocation);
-            } else {
+            } 
+                
+            else {
                 // Overcrowding.
                 setDead();
-            }
+                }
         }
     }
 
@@ -71,6 +84,7 @@ public class Rabbit extends Animal {
             Entity animal = field.getAnimalAt(loc);
             if (animal instanceof Plant plant) {
                 if (plant.isAlive()) {
+                    System.out.println("Rabbit Has Eaten");
                     plant.setDead();
                     foodLevel = plant.getHeight();
                     foodLocation = loc;
@@ -139,6 +153,9 @@ public class Rabbit extends Animal {
         if (!isGenderFemale()) {
             return;
         }
+        
+        
+        
 
         // Check if there's a male rabbit nearby before attempting to breed
         if (!isMaleNearby(currentField)) {
@@ -150,7 +167,7 @@ public class Rabbit extends Animal {
         if (births > 0) { // If the breed method has provided a number of births greater than 0
             for (int b = 0; b < births && !freeLocations.isEmpty(); b++) {
                 Location loc = freeLocations.remove(0);
-                Rabbit young = new Rabbit(false, loc);
+                Rabbit young = new Rabbit(false, loc, false);
                 nextFieldState.placeAnimal(young, loc);
             }
         }
