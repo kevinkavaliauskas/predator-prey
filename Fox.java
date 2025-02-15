@@ -16,11 +16,9 @@ public class Fox extends Predator
     private static final Random rand = Randomizer.getRandom();
     
     
-
-    
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
-    private static final int RABBIT_FOOD_VALUE = 9;
+    private static final int RABBIT_FOOD_VALUE = 20;
 
     /**
      * Create a fox. A fox can be created as a new born (age zero

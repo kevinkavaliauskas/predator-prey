@@ -21,6 +21,14 @@ public abstract class Prey extends Animal {
         super(location, BREEDING_AGE, MAX_AGE, BREEDING_PROBABILITY, MAX_LITTER_SIZE);
         age = 0;
     }
+    
+    protected void incrementHunger()
+    {
+        foodLevel--;
+        if(foodLevel <= 0) {
+            setDead();
+        }
+    }
 
     
     /**

@@ -23,11 +23,12 @@ public class Rabbit extends Prey {
      * @param location  The location within the field.
      */
     public Rabbit(boolean randomAge, Location location) {
-        super(location, 5, 40, 0.3, 8); // Constructor of prey class for rabbit class
+        super(location, 5, 40, 1, 8); // Constructor of prey class for rabbit class
         this.gender = rand.nextBoolean() ? "female" : "male"; // Assigns a random gender to the rabbit.
         if (randomAge) {
             setAge(rand.nextInt(MAX_AGE));
         }
+        foodLevel = rand.nextInt(100);
     }
 
     public String getGender() {
@@ -43,6 +44,7 @@ public class Rabbit extends Prey {
      */
     public void act(Field currentField, Field nextFieldState, Boolean isDay, String weather) {
         incrementAge();
+        incrementHunger();
         if (isAlive()) {
             List<Location> freeLocations = nextFieldState.getFreeAdjacentLocations(getLocation());
             if (!freeLocations.isEmpty()) {

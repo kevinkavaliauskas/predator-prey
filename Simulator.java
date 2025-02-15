@@ -123,8 +123,8 @@ public class Simulator {
                     double probability = Randomizer.getRandom().nextDouble(); // Generate one random number
                     // If the probability is less than the plant creation probability, create a
                     // plant
-                    if (probability <= PLANT_CREATION_PROBABILITY) {
-                        Plant plant = new Plant(true, location);
+                    if (probability <= (PLANT_CREATION_PROBABILITY)/10) {
+                        Plant plant = new Plant(true, location, false);
                         nextFieldState.placeAnimal(plant, location);
                     }
                 }
@@ -168,7 +168,7 @@ public class Simulator {
                     field.placeAnimal(rabbit, location);
                 } else if (probability <= (FOX_CREATION_PROBABILITY + RABBIT_CREATION_PROBABILITY
                         + PLANT_CREATION_PROBABILITY)) {
-                    Plant plant = new Plant(true, location);
+                    Plant plant = new Plant(true, location, true);
                     field.placeAnimal(plant, location);
                     // else leave the location empty.
 

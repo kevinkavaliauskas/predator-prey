@@ -1,3 +1,4 @@
+import java.util.Random;
 
 /**
  * Common elements of foxes and rabbits.
@@ -9,19 +10,30 @@ public class Plant extends Entity
 {
     // Whether the plant is alive or not.
     private boolean alive;
-    // The plant's position.
+    // The plant's current food value..
     private int height;
     // Number of steps since last rain weather
     private int lastRain = 0;
+    //The Max height a plant can grow too.
+    private int maxHeight = 25;
+    
+    private static final Random rand = Randomizer.getRandom();
 
     /**
      * Constructor for objects of class Animal.
      * @param location The animal's location.
      */
-    public Plant(boolean alive, Location location)
+    public Plant(boolean alive, Location location, boolean randomHeight)
     {
         super(location);
         this.alive = true;
+        if (randomHeight) {
+            setHeight(rand.nextInt(maxHeight));
+        }
+    }
+    
+    private void setHeight(int height){
+        this.height = height;
     }
     
     /**
@@ -59,8 +71,12 @@ public class Plant extends Entity
     private void grow() {
         height += 5;
         if (height >= 25) {
-            height = 25;
+            height = maxHeight;
         }
+    }
+    
+    private int getMaxHeight(){
+        return maxHeight;
     }
     
     public int getHeight(){
@@ -70,7 +86,7 @@ public class Plant extends Entity
 
 
     public String toString() {
-        return "Rabbit{" +
+        return "Plant{" +
                 ", alive=" + isAlive() +
                 ", location=" + getLocation() +
                 '}';

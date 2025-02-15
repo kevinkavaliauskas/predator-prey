@@ -47,6 +47,7 @@ public abstract class Predator extends Animal
         if(foodLevel <= 0) {
             setDead();
         }
+        System.out.println("Fox dies of hunger");
     }
     
     protected abstract void giveBirth(Field nextFieldState, List<Location> freeLocations, Field currentField, boolean isDay);
