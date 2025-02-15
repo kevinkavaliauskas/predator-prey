@@ -78,7 +78,7 @@ public abstract class Animal extends Entity {
         return gender;
     }
     
-    protected abstract Location findFood(Field field);
+    protected abstract Location findFood(Field field, boolean isDay);
     
     
     protected boolean isGenderFemale() {
@@ -99,7 +99,6 @@ public abstract class Animal extends Entity {
         age++;
         if (age>MAX_AGE){
             setDead();
-            System.out.println("Died of old age");
         }
     }
     

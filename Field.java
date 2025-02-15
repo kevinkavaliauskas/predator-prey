@@ -63,10 +63,10 @@ public class Field
      * @param location Get locations adjacent to this.
      * @return A list of free adjacent locations.
      */
-    public List<Location> getFreeAdjacentLocations(Location location)
+    public List<Location> getFreeAdjacentLocations(Location location, int radius)
     {
         List<Location> free = new LinkedList<>();
-        List<Location> adjacent = getAdjacentLocations(location);
+        List<Location> adjacent = getAdjacentLocations(location, radius);
         for(Location next : adjacent) {
             Entity anAnimal = field.get(next);
             if(anAnimal == null) {
@@ -84,19 +84,20 @@ public class Field
      * The list will not include the location itself.
      * All locations will lie within the grid.
      * @param location The location from which to generate adjacencies.
+     * @param radius The number of tiles around that are to be checked.
      * @return A list of locations adjacent to that given.
      */
-    public List<Location> getAdjacentLocations(Location location)
+    public List<Location> getAdjacentLocations(Location location, int radius)
     {
         // The list of locations to be returned.
         List<Location> locations = new ArrayList<>();
         if(location != null) {
             int row = location.row();
             int col = location.col();
-            for(int roffset = -1; roffset <= 1; roffset++) {
+            for(int roffset = -radius; roffset <= radius; roffset++) {
                 int nextRow = row + roffset;
                 if(nextRow >= 0 && nextRow < depth) {
-                    for(int coffset = -1; coffset <= 1; coffset++) {
+                    for(int coffset = -radius; coffset <= radius; coffset++) {
                         int nextCol = col + coffset;
                         // Exclude invalid locations and the original location.
                         if(nextCol >= 0 && nextCol < width && (roffset != 0 || coffset != 0)) {

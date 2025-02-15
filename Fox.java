@@ -27,7 +27,7 @@ public class Fox extends Animal
      */
     public Fox(boolean randomAge, Location location)
     {
-        super(location, 5, 150, 1, 8, false);
+        super(location, 5, 150, 1, 4, false);
         
         if(randomAge) {
             setAge(rand.nextInt(MAX_AGE));
@@ -52,13 +52,12 @@ public class Fox extends Animal
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            List<Location> freeLocations =
-                    nextFieldState.getFreeAdjacentLocations(getLocation());
+            List<Location> freeLocations = nextFieldState.getFreeAdjacentLocations(getLocation(), 1);
             if(! freeLocations.isEmpty()) {
                 giveBirth(nextFieldState, freeLocations, currentField, isDay);
             }
             // Move towards a source of food if found.
-            Location nextLocation = findFood(currentField);
+            Location nextLocation = findFood(currentField, isDay);
             if(nextLocation == null && ! freeLocations.isEmpty()) {
                 // No food found - try to move to a free location.
                 nextLocation = freeLocations.remove(0);
@@ -97,22 +96,46 @@ public class Fox extends Animal
      * @param field The field currently occupied.
      * @return Where food was found, or null if it wasn't.
      */
-    protected Location findFood(Field field)
+    protected Location findFood(Field field, boolean isDay)
     {
-        List<Location> adjacent = field.getAdjacentLocations(getLocation());
-        Iterator<Location> it = adjacent.iterator();
-        Location foodLocation = null;
-        while(foodLocation == null && it.hasNext()) {
-            Location loc = it.next();
-            Entity animal = field.getAnimalAt(loc);
-            if(animal instanceof Rabbit rabbit) {
-                if(rabbit.isAlive()) {
-                    rabbit.setDead();
-                    foodLevel = RABBIT_FOOD_VALUE;
-                    foodLocation = loc;
+        List<Location> adjacent;
+        Location foodLocation;
+        if (foodLevel <15){
+            if (!isDay){
+                adjacent = field.getAdjacentLocations(getLocation(), 2); //Foxes can check for food 2 steps at night.
+            }
+            else{
+                adjacent = field.getAdjacentLocations(getLocation(), 1); //During day they can only check 1 step.
+            }
+            Iterator<Location> it = adjacent.iterator();
+            foodLocation = null;
+            while(foodLocation == null && it.hasNext()) {
+                Location loc = it.next();
+                Entity animal = field.getAnimalAt(loc);
+                if(animal instanceof Rabbit rabbit) {
+                    if(rabbit.isAlive()) {
+                        rabbit.setDead();
+                        System.out.println("Rabbit Died to Fox");
+                        foodLevel = RABBIT_FOOD_VALUE;
+                        foodLocation = loc;
+                    }
                 }
             }
         }
+        //Will move to a random location if above the 17 food level
+        else{
+
+            List<Location> freeAdjacent = field.getFreeAdjacentLocations(getLocation(), 1);
+            if (!freeAdjacent.isEmpty()) {
+                foodLocation = freeAdjacent.get(rand.nextInt(freeAdjacent.size())); // Pick a random free location.
+            } 
+            else {
+                foodLocation = getLocation(); // Stay in the same place if surrounded.
+            } 
+        }
+
+        
+        
         return foodLocation;
     }
     
@@ -148,7 +171,7 @@ public class Fox extends Animal
     }
     
     protected boolean isMaleNearby(Field currentField) {
-        List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation()); // Gets all adjacent
+        List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation(), 1); // Gets all adjacent
                                                                                              // locations to check if
                                                                                              // there is a male rabbit
                                                                                              // nearby.

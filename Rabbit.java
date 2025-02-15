@@ -19,7 +19,7 @@ public class Rabbit extends Animal {
      * @param location  The location within the field.
      */
     public Rabbit(boolean randomAge, Location location, boolean infected) {
-        super(location, 5, 40, 1, 8, infected); // Constructor of prey class for rabbit class
+        super(location, 5, 20, 1, 12, infected); // Constructor of prey class for rabbit class
         
         if (randomAge) {
             setAge(rand.nextInt(MAX_AGE));
@@ -44,8 +44,13 @@ public class Rabbit extends Animal {
         
         //Can only get cured if infected, will always be infected for at least one step.
         if(infected){
+            //Every turn infected, their max age will decrease by 10%.
             MAX_AGE = (int)(0.9 * MAX_AGE);
             getCured();
+            if (rand.nextDouble() <0.05){
+                setDead();
+                System.out.println("Rabbit Died of infection");
+            }
         }
         
         //Can only get infected if not already infected
@@ -53,13 +58,15 @@ public class Rabbit extends Animal {
             getInfected();
         }
         
+        
+        
         //Spread Disease to other members of the same species in adjacent tiles.
         spreadDisease(currentField, isDay);
         
         
         
         if (isAlive()) {
-            List<Location> freeLocations = nextFieldState.getFreeAdjacentLocations(getLocation());
+            List<Location> freeLocations = nextFieldState.getFreeAdjacentLocations(getLocation(), 2);
             if (!freeLocations.isEmpty()) {
                 giveBirth(nextFieldState, freeLocations, currentField, isDay);
             }
@@ -68,7 +75,7 @@ public class Rabbit extends Animal {
             Location nextLocation;
             //Rabbits can only find food during the day.
             if(isDay){
-                nextLocation = findFood(currentField);
+                nextLocation = findFood(currentField, isDay);
                 
             }
             else{
@@ -93,8 +100,15 @@ public class Rabbit extends Animal {
         
     }
 
-    protected Location findFood(Field field) {
-        List<Location> adjacent = field.getAdjacentLocations(getLocation());
+    protected Location findFood(Field field, boolean isDay) {
+        List<Location> adjacent;
+        if(isDay){
+            adjacent = field.getAdjacentLocations(getLocation(), 2);
+        }
+        else{
+            adjacent = field.getAdjacentLocations(getLocation(), 1);
+        }
+        
         Iterator<Location> it = adjacent.iterator();
         Location foodLocation = null;
         while (foodLocation == null && it.hasNext()) {
@@ -112,7 +126,7 @@ public class Rabbit extends Animal {
     }
 
     protected boolean isMaleNearby(Field currentField) {
-        List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation()); // Gets all adjacent
+        List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation(), 1); // Gets all adjacent
                                                                                              // locations to check if
                                                                                              // there is a male rabbit
                                                                                              // nearby.
@@ -120,8 +134,7 @@ public class Rabbit extends Animal {
         // male rabbit in one, then breeding can occur.
         for (Location location : adjacentLocations) {
             Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
-            if (animal instanceof Rabbit && ((Rabbit) animal).getGender().equals("male")) { // Checks if the animal is a
-                                                                                            // male
+            if (animal instanceof Rabbit && ((Rabbit) animal).getGender().equals("male")) { // Checks if the animal is a male
                 return true;
             }
         }
@@ -129,8 +142,8 @@ public class Rabbit extends Animal {
     }
 
     protected void spreadDisease(Field currentField, boolean isDay){
-        List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation()); //Get all adjacent location to check if their are any of the same species within
-                                                                                               // the same radius. To see who disease can be spread to.
+        List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation(), 1); //Get all adjacent location to check if their are any of the same species within
+                                                                                                       // the same radius. To see who disease can be spread to.
         // Checks each adjacent location if there is a rabbit in each one. 
         for (Location location : adjacentLocations) {
             Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
