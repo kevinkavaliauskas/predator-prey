@@ -30,6 +30,9 @@ public class Plant extends Entity
         if (randomHeight) {
             setHeight(rand.nextInt(maxHeight));
         }
+        else{
+            setHeight(0); //If not randomly spawned in, sets the height to 0.
+        }
     }
     
     private void setHeight(int height){
