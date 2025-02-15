@@ -9,7 +9,7 @@ import java.util.Random;
  * @author David J. Barnes and Michael Kölling
  * @version 7.1
  */
-public class Fox extends Predator
+public class Fox extends Animal
 {
     
     // A shared random number generator to control breeding.

@@ -9,7 +9,7 @@ import java.util.Iterator;
  * @author David J. Barnes and Michael Kölling
  * @version 7.1
  */
-public class Rabbit extends Prey {
+public class Rabbit extends Animal {
 
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();

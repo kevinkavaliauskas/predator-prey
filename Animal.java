@@ -53,6 +53,14 @@ public abstract class Animal extends Entity {
         age++;
     }
     
+    protected void incrementHunger()
+    {
+        foodLevel--;
+        if(foodLevel <= 0) {
+            setDead();
+        }
+    }
+    
     /**
      * Get the current age of the prey.
      * @return The current age.
