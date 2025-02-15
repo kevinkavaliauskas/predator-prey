@@ -27,13 +27,17 @@ public class Fox extends Animal
      */
     public Fox(boolean randomAge, Location location)
     {
-        super(location, 15, 150, 1, 8, false);
+        super(location, 5, 150, 1, 4, false);
         
         if(randomAge) {
             setAge(rand.nextInt(MAX_AGE));
         }
         
         foodLevel = rand.nextInt(RABBIT_FOOD_VALUE);
+    }
+    
+    protected void spreadDisease(Field currentField){
+        int x = 1;
     }
     
     /**
@@ -135,7 +139,6 @@ public class Fox extends Animal
         // New rabbits are born into adjacent locations.
         int births = breed(); // Triggers the breed method which checks if a Fox can breed.
         if (births > 0) { // If the breed method has provided a number of births greater than 0
-            System.out.println("Foxes Have Bred");
             for (int b = 0; b < births && !freeLocations.isEmpty(); b++) {
                 Location loc = freeLocations.remove(0);
                 Fox young = new Fox(false, loc);

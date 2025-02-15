@@ -12,7 +12,7 @@ public abstract class Animal extends Entity {
     protected int age;
     
     // The age to which a Prey can live.
-    protected final int MAX_AGE;
+    protected int MAX_AGE;
     
     // The likelihood of a Prey breeding.
     protected final double BREEDING_PROBABILITY;
@@ -54,11 +54,22 @@ public abstract class Animal extends Entity {
         age = 0;
     }
     
+    //100% chance of getting infected through spread
     protected void getInfected(){
+        infected = true;
+        System.out.println("Infected Rabbit");
+    }
+    
+    //1% of randomly getting infected by disease every step.
+    protected void getInfectedPassive(){
         if (rand.nextDouble() <= 0.01){
-            infected = true;
+            getInfected();  
         }
-        else{
+    }
+    
+    protected void getCured(){
+        //20% chance every step of disease being cured.
+        if(rand.nextDouble()<=0.2){
             infected = false;
         }
     }
@@ -91,6 +102,12 @@ public abstract class Animal extends Entity {
             setDead();
         }
     }
+    
+    protected boolean getInfectedStatus(){
+        return infected;
+    }
+    
+    protected abstract void spreadDisease(Field currentField);
     
     protected void incrementHunger()
     {

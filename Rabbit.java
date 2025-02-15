@@ -40,7 +40,23 @@ public class Rabbit extends Animal {
     public void act(Field currentField, Field nextFieldState, Boolean isDay, String weather) {
         incrementAge();
         incrementHunger();
-        getInfected();
+        
+        
+        //Can only get cured if infected, will always be infected for at least one step.
+        if(infected){
+            MAX_AGE = (int)(0.9 * MAX_AGE);
+            getCured();
+        }
+        
+        //Can only get infected if not already infected
+        if(!infected){
+            getInfected();
+        }
+        
+        
+        
+        
+        
         if (isAlive()) {
             List<Location> freeLocations = nextFieldState.getFreeAdjacentLocations(getLocation());
             if (!freeLocations.isEmpty()) {
@@ -73,6 +89,7 @@ public class Rabbit extends Animal {
                 setDead();
                 }
         }
+        
     }
 
     protected Location findFood(Field field) {
@@ -84,7 +101,6 @@ public class Rabbit extends Animal {
             Entity animal = field.getAnimalAt(loc);
             if (animal instanceof Plant plant) {
                 if (plant.isAlive()) {
-                    System.out.println("Rabbit Has Eaten");
                     plant.setDead();
                     foodLevel = plant.getHeight();
                     foodLocation = loc;
@@ -111,8 +127,19 @@ public class Rabbit extends Animal {
         return false;
     }
 
+    protected void spreadDisease(Field currentField){
+        List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation()); //Get all adjacent location to check if their are any of the same species within
+                                                                                               // the same radius.
+        // Checks each adjacent location if there is a rabbit in each one. 
+        for (Location location : adjacentLocations) {
+            Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
+            if (animal instanceof Rabbit && !((Rabbit) animal).getInfectedStatus() && rand.nextDouble()<=0.02) { 
+                ((Animal)animal).getInfected();
+            }
+        }
+                                                                                            
+    }
     
-
     @Override
     public String toString() {
         return "Rabbit{" +
@@ -154,9 +181,9 @@ public class Rabbit extends Animal {
             return;
         }
         
-        //If infected there is a 50% chance it cannot breed. 
+        //If infected there is a 20% chance it cannot breed. 
         if (infected) {
-            if (rand.nextDouble() < 0.5) {
+            if (rand.nextDouble() < 0.2) {
                 return;
             }
         }
@@ -171,8 +198,17 @@ public class Rabbit extends Animal {
         if (births > 0) { // If the breed method has provided a number of births greater than 0
             for (int b = 0; b < births && !freeLocations.isEmpty(); b++) {
                 Location loc = freeLocations.remove(0);
-                Rabbit young = new Rabbit(false, loc, false);
-                nextFieldState.placeAnimal(young, loc);
+                
+                //If Infected, 50% chance that the children will also be infected
+                if(infected && rand.nextDouble()<=0.5){
+                    Rabbit young = new Rabbit(false, loc, true);
+                    nextFieldState.placeAnimal(young, loc);
+                }
+                else{
+                    Rabbit young = new Rabbit(false, loc, false);
+                    nextFieldState.placeAnimal(young, loc);
+                }
+                
             }
         }
     }
