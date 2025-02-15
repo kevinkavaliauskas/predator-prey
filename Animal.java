@@ -57,7 +57,6 @@ public abstract class Animal extends Entity {
     //100% chance of getting infected through spread
     protected void getInfected(){
         infected = true;
-        System.out.println("Infected Rabbit");
     }
     
     //1% of randomly getting infected by disease every step.
@@ -100,6 +99,7 @@ public abstract class Animal extends Entity {
         age++;
         if (age>MAX_AGE){
             setDead();
+            System.out.println("Died of old age");
         }
     }
     
@@ -107,7 +107,7 @@ public abstract class Animal extends Entity {
         return infected;
     }
     
-    protected abstract void spreadDisease(Field currentField);
+    protected abstract void spreadDisease(Field currentField, boolean isDay);
     
     protected void incrementHunger()
     {

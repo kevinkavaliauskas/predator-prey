@@ -14,7 +14,7 @@ public class Plant extends Entity
     // Number of steps since last rain weather
     private int lastRain = 0;
     //The Max height a plant can grow too.
-    private int maxHeight = 25;
+    private int maxHeight = 10;
     
     
 
@@ -71,8 +71,8 @@ public class Plant extends Entity
     }
     
     private void grow() {
-        height += 5;
-        if (height >= 25) {
+        height += 2;
+        if (height >= 10) {
             height = maxHeight;
         }
     }

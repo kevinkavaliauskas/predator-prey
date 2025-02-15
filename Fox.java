@@ -27,7 +27,7 @@ public class Fox extends Animal
      */
     public Fox(boolean randomAge, Location location)
     {
-        super(location, 5, 150, 1, 4, false);
+        super(location, 5, 150, 1, 8, false);
         
         if(randomAge) {
             setAge(rand.nextInt(MAX_AGE));
@@ -36,7 +36,7 @@ public class Fox extends Animal
         foodLevel = rand.nextInt(RABBIT_FOOD_VALUE);
     }
     
-    protected void spreadDisease(Field currentField){
+    protected void spreadDisease(Field currentField, boolean isDay){
         int x = 1;
     }
     

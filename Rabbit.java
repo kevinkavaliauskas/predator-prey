@@ -24,7 +24,7 @@ public class Rabbit extends Animal {
         if (randomAge) {
             setAge(rand.nextInt(MAX_AGE));
         }
-        foodLevel = rand.nextInt(20) + 5 ;
+        foodLevel = rand.nextInt(20);
     }
     
     
@@ -53,7 +53,8 @@ public class Rabbit extends Animal {
             getInfected();
         }
         
-        
+        //Spread Disease to other members of the same species in adjacent tiles.
+        spreadDisease(currentField, isDay);
         
         
         
@@ -102,7 +103,7 @@ public class Rabbit extends Animal {
             if (animal instanceof Plant plant) {
                 if (plant.isAlive()) {
                     plant.setDead();
-                    foodLevel = plant.getHeight();
+                    foodLevel = foodLevel + plant.getHeight();
                     foodLocation = loc;
                 }
             }
@@ -127,15 +128,24 @@ public class Rabbit extends Animal {
         return false;
     }
 
-    protected void spreadDisease(Field currentField){
+    protected void spreadDisease(Field currentField, boolean isDay){
         List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation()); //Get all adjacent location to check if their are any of the same species within
-                                                                                               // the same radius.
+                                                                                               // the same radius. To see who disease can be spread to.
         // Checks each adjacent location if there is a rabbit in each one. 
         for (Location location : adjacentLocations) {
             Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
-            if (animal instanceof Rabbit && !((Rabbit) animal).getInfectedStatus() && rand.nextDouble()<=0.02) { 
-                ((Animal)animal).getInfected();
+            //More likely to spread disease at day than night.
+            if(isDay){
+                if (animal instanceof Rabbit && !((Rabbit) animal).getInfectedStatus() && rand.nextDouble()<=0.3) { 
+                    ((Animal)animal).getInfected();
+                }
             }
+            else{
+                if (animal instanceof Rabbit && !((Rabbit) animal).getInfectedStatus() && rand.nextDouble()<=0.1) { 
+                    ((Animal)animal).getInfected();
+                }
+            }
+            
         }
                                                                                             
     }
