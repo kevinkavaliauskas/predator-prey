@@ -19,7 +19,7 @@ public class Rabbit extends Animal {
      * @param location  The location within the field.
      */
     public Rabbit(boolean randomAge, Location location, boolean infected) {
-        super(location, 5, 20, 1, 12, infected); // Constructor of prey class for rabbit class
+        super(location, 5, 20, 0.32, 12, infected); // Constructor of prey class for rabbit class
         
         if (randomAge) {
             setAge(rand.nextInt(MAX_AGE));
@@ -53,9 +53,9 @@ public class Rabbit extends Animal {
         }
         
         //Can only get infected if not already infected
-        if(!infected){
-            getInfected();
-        }
+        // if(!infected){
+        //     getInfected();
+        // }
         
         
         
@@ -148,12 +148,12 @@ public class Rabbit extends Animal {
             Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
             //More likely to spread disease at day than night.
             if(isDay){
-                if (animal instanceof Rabbit && !((Rabbit) animal).getInfectedStatus() && rand.nextDouble()<=0.3) { 
+                if (animal instanceof Rabbit && !((Rabbit) animal).getInfectedStatus() && rand.nextDouble()<=0.01) { 
                     ((Animal)animal).getInfected();
                 }
             }
             else{
-                if (animal instanceof Rabbit && !((Rabbit) animal).getInfectedStatus() && rand.nextDouble()<=0.1) { 
+                if (animal instanceof Rabbit && !((Rabbit) animal).getInfectedStatus() && rand.nextDouble()<=0.001) { 
                     ((Animal)animal).getInfected();
                 }
             }
@@ -221,8 +221,8 @@ public class Rabbit extends Animal {
             for (int b = 0; b < births && !freeLocations.isEmpty(); b++) {
                 Location loc = freeLocations.remove(0);
                 
-                //If Infected, 50% chance that the children will also be infected
-                if(infected && rand.nextDouble()<=0.5){
+                //If Infected, 20% chance that the children will also be infected
+                if(infected && rand.nextDouble()<=0.2){
                     Rabbit young = new Rabbit(false, loc, true);
                     nextFieldState.placeAnimal(young, loc);
                 }

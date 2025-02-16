@@ -27,7 +27,7 @@ public class Fox extends Animal
      */
     public Fox(boolean randomAge, Location location)
     {
-        super(location, 5, 150, 1, 4, false);
+        super(location, 5, 150, 1, 8, false);
         
         if(randomAge) {
             setAge(rand.nextInt(MAX_AGE));
