@@ -57,7 +57,7 @@ public class Fox extends Animal
                 giveBirth(nextFieldState, freeLocations, currentField, isDay);
             }
             // Move towards a source of food if found.
-            Location nextLocation = findFood(currentField, isDay);
+            Location nextLocation = findFood(currentField, isDay, weather);
             if(nextLocation == null && ! freeLocations.isEmpty()) {
                 // No food found - try to move to a free location.
                 nextLocation = freeLocations.remove(0);
@@ -96,12 +96,12 @@ public class Fox extends Animal
      * @param field The field currently occupied.
      * @return Where food was found, or null if it wasn't.
      */
-    protected Location findFood(Field field, boolean isDay)
+    protected Location findFood(Field field, boolean isDay, String weather)
     {
         List<Location> adjacent;
         Location foodLocation;
         if (foodLevel <15){
-            if (!isDay){
+            if (!isDay && (weather.equals("sunny"))){ //Foxes can check 2 steps if it is day and if the weather is good.
                 adjacent = field.getAdjacentLocations(getLocation(), 2); //Foxes can check for food 2 steps at night.
             }
             else{
@@ -115,7 +115,6 @@ public class Fox extends Animal
                 if(animal instanceof Rabbit rabbit) {
                     if(rabbit.isAlive()) {
                         rabbit.setDead();
-                        System.out.println("Rabbit Died to Fox");
                         foodLevel = RABBIT_FOOD_VALUE;
                         foodLocation = loc;
                     }

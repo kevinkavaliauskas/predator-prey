@@ -49,7 +49,6 @@ public class Rabbit extends Animal {
             getCured();
             if (rand.nextDouble() <0.05){
                 setDead();
-                System.out.println("Rabbit Died of infection");
             }
         }
         
@@ -75,7 +74,7 @@ public class Rabbit extends Animal {
             Location nextLocation;
             //Rabbits can only find food during the day.
             if(isDay){
-                nextLocation = findFood(currentField, isDay);
+                nextLocation = findFood(currentField, isDay, weather);
                 
             }
             else{
@@ -100,7 +99,7 @@ public class Rabbit extends Animal {
         
     }
 
-    protected Location findFood(Field field, boolean isDay) {
+    protected Location findFood(Field field, boolean isDay, String weather) {
         List<Location> adjacent;
         if(isDay){
             adjacent = field.getAdjacentLocations(getLocation(), 2);

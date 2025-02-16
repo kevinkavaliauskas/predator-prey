@@ -78,7 +78,7 @@ public abstract class Animal extends Entity {
         return gender;
     }
     
-    protected abstract Location findFood(Field field, boolean isDay);
+    protected abstract Location findFood(Field field, boolean isDay, String weather);
     
     
     protected boolean isGenderFemale() {
