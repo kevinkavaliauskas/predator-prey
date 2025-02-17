@@ -115,7 +115,7 @@ public class Bear extends Animal
             
             Location nextLocation;
             //Bear cannot find food during snow.
-            if(!(weather.equals("snow"))){
+            if(!(weather.equals("snow")) && !isDay){ //Bears can only hunt in the night
                 nextLocation = findFood(currentField, isDay, weather);
             }
             //Hibernates during snow.

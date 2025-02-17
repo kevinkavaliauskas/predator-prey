@@ -46,7 +46,7 @@ public class Mouse extends Animal {
         if(infected){
             //Every turn infected, their max age will decrease by 10%.
             MAX_AGE = (int)(0.9 * MAX_AGE);
-            //20% chance of getting cured every step.
+            //20% chance of getting cured every step.d
             getCured(0.2);
             if (rand.nextDouble() <0.05){
                 setDead();
