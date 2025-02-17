@@ -150,7 +150,8 @@ public class Fox extends Animal
         }
 
         // Check if there's a male Foxes nearby before attempting to breed
-        if (!isMaleNearby(currentField)) {
+        Location maleLocation = isMaleNearby(currentField);
+        if (maleLocation == null) {
             return; // No male nearby, so no breeding occurs
         }
         
@@ -169,7 +170,7 @@ public class Fox extends Animal
         }
     }
     
-    protected boolean isMaleNearby(Field currentField) {
+    protected Location isMaleNearby(Field currentField) {
         List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation(), 1); // Gets all adjacent
                                                                                              // locations to check if
                                                                                              // there is a male rabbit
@@ -180,10 +181,10 @@ public class Fox extends Animal
             Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
             if (animal instanceof Fox && ((Fox) animal).getGender().equals("male")) { // Checks if the animal is a
                                                                                             // male
-                return true;
+                return location;
             }
         }
-        return false;
+        return null;
     }
     
     
