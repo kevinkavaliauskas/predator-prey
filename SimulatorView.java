@@ -10,7 +10,8 @@ import java.util.Map;
  * Colors for each type of species can be defined using the
  * setColor method.
  * 
- * @author David J. Barnes and Michael Kölling
+ * @author David J. Barnes and Michael Kölling and Kevin Kavaliauskas and
+ *         Aashwin Eldo
  * @version 7.0
  */
 public class SimulatorView extends JFrame {
@@ -46,7 +47,6 @@ public class SimulatorView extends JFrame {
         setColor(Plant.class, Color.green);
         setColor(Bear.class, Color.red);
         setColor(Mouse.class, Color.yellow);
-        
 
         setTitle("Wolf + Deer + Plant + Bear + Mouse Simulation");
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);

@@ -4,29 +4,30 @@ import java.util.*;
  * A simple predator-prey simulator, based on a rectangular field containing
  * rabbits and foxes.
  * 
- * @author David J. Barnes and Michael Kölling
+ * @author David J. Barnes and Michael Kölling and Aashwin Eldo and Kevin
+ *         Kavaliauskas
  * @version 7.1
  */
 public class Simulator {
-    // Testing git repo collaboration
     // Constants representing configuration information for the simulation.
+
     // The default width for the grid.
     private static final int DEFAULT_WIDTH = 120;
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
     // The probability that a wolf will be created in any given grid position.
     private static final double WOLF_CREATION_PROBABILITY = 0.19;
-    // The probability that a rabbit will be created in any given position.
+    // The probability that a deer will be created in any given position.
     private static final double DEER_CREATION_PROBABILITY = 0.16;
     // The probability that a plant will be created in any given position.
     private static final double PLANT_CREATION_PROBABILITY = 0.20;
-    // The probability that a Bear will be created in any given position.
+    // The probability that a bear will be created in any given position.
     private static final double BEAR_CREATION_PROBABILITY = 0.06;
-    // The probability that a plant will be created in any given position.
+    // The probability that a mouse will be created in any given position.
     private static final double MOUSE_CREATION_PROBABILITY = 0.28;
 
-    // The Current State of Day/Night. Changes To true if day, changes
-    // to false if night.
+    // The current state of day/night. Changes to true if day, changes to false if
+    // night.
     private Boolean isDay;
 
     // The current state of the field.
@@ -71,7 +72,7 @@ public class Simulator {
 
     /**
      * Run the simulation from its current state for a reasonably long
-     * period (4000 steps).
+     * period (700 steps).
      */
     public void runLongSimulation() {
         simulate(700);
@@ -93,27 +94,28 @@ public class Simulator {
 
     /**
      * Run the simulation from its current state for a single step.
-     * Iterate over the whole field updating the state of each fox and rabbit.
+     * Iterate over the whole field updating the state of each entity.
      */
     public void simulateOneStep() {
         step++;
 
         isDay = !isDay; // Flips the day/night state.
 
-        // Use a separate Field to store the starting state of
-        // the next step.
+        // Use a separate Field to store the starting state of the next step.
         Field nextFieldState = new Field(field.getDepth(), field.getWidth());
 
+        // Randomly set the weather every 5 steps.
         if (step % 5 == 0) {
             weather.setRandomWeather();
         }
 
+        // Iterate over the whole field updating the state of each entity.
         List<Entity> animals = field.getAnimals();
         for (Entity anAnimal : animals) {
             anAnimal.act(field, nextFieldState, isDay, weather.getWeather());
         }
 
-        // grow some new plants randomly
+        // Grow some new plants randomly.
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
 
@@ -153,7 +155,7 @@ public class Simulator {
     }
 
     /**
-     * Randomly populate the field with foxes, rabbits and plants.
+     * Randomly populate the field with wolves, deer, plants, bears and mice.
      */
     private void populate() {
         Random rand = Randomizer.getRandom();
@@ -192,7 +194,6 @@ public class Simulator {
      * Report on the number of each type of animal in the field.
      */
     public void reportStats() {
-        // System.out.print("Step: " + step + " ");
         field.fieldStats();
     }
 
