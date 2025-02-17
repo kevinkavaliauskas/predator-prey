@@ -18,7 +18,7 @@ public class Rabbit extends Animal {
      * @param randomAge If true, the rabbit will have random age.
      * @param location  The location within the field.
      */
-    public Rabbit(boolean randomAge, Location location, boolean infected, double breedingProbability, int breedingAge, int maxLitterSize) {
+    public Rabbit(boolean randomAge, Location location, boolean infected) {
         super(location, 5, 20, 0.32, 12, infected); // Constructor of prey class for rabbit class
         
         if (randomAge) {
@@ -258,11 +258,17 @@ public class Rabbit extends Animal {
                 
                 //If Infected, 20% chance that the children will also be infected
                 if(infected && rand.nextDouble()<=0.2){
-                    Rabbit young = new Rabbit(false, loc, true, newBreedingProbability, newBreedingAge, newMaxLitterSize);
+                    Rabbit young = new Rabbit(false, loc, true);
+                    young.setBreedingProbability(newBreedingProbability);
+                    young.setBreedingAge(newBreedingAge);
+                    young.setMaxLitterSize(newMaxLitterSize);
                     nextFieldState.placeAnimal(young, loc);
                 }
                 else{
-                    Rabbit young = new Rabbit(false, loc, false, newBreedingProbability, newBreedingAge, newMaxLitterSize);
+                    Rabbit young = new Rabbit(false, loc, false);
+                    young.setBreedingProbability(newBreedingProbability);
+                    young.setBreedingAge(newBreedingAge);
+                    young.setMaxLitterSize(newMaxLitterSize);
                     nextFieldState.placeAnimal(young, loc);
                 }
                 

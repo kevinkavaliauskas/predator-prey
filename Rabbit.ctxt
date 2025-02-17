@@ -1,8 +1,8 @@
 #BlueJ class context
 comment0.target=Rabbit
 comment0.text=\n\ A\ simple\ model\ of\ a\ rabbit.\n\ Rabbits\ age,\ move,\ breed,\ and\ die.\n\ \n\ @author\ David\ J.\ Barnes\ and\ Michael\ K\u00F6lling\n\ @version\ 7.1\n
-comment1.params=randomAge\ location\ infected
-comment1.target=Rabbit(boolean,\ Location,\ boolean)
+comment1.params=randomAge\ location\ infected\ breedingProbability\ breedingAge\ maxLitterSize
+comment1.target=Rabbit(boolean,\ Location,\ boolean,\ double,\ int,\ int)
 comment1.text=\n\ Create\ a\ new\ rabbit.\ A\ rabbit\ may\ be\ created\ with\ age\n\ zero\ (a\ new\ born)\ or\ with\ a\ random\ age.\n\ \n\ @param\ randomAge\ If\ true,\ the\ rabbit\ will\ have\ random\ age.\n\ @param\ location\ \ The\ location\ within\ the\ field.\n
 comment10.params=
 comment10.target=boolean\ canBreed()
@@ -13,7 +13,7 @@ comment2.text=\n\ This\ is\ what\ the\ rabbit\ does\ most\ of\ the\ time\ -\ it\
 comment3.params=field\ isDay\ weather
 comment3.target=Location\ findFood(Field,\ boolean,\ java.lang.String)
 comment4.params=currentField
-comment4.target=boolean\ isMaleNearby(Field)
+comment4.target=Location\ isMaleNearby(Field)
 comment5.params=currentField\ isDay
 comment5.target=void\ spreadDisease(Field,\ boolean)
 comment6.params=
