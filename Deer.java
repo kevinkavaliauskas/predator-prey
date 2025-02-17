@@ -68,9 +68,13 @@ public class Deer extends Animal {
             // Move towards a source of food if found.
 
             Location nextLocation;
-            
-            nextLocation = findFood(currentField, isDay, weather);
+            // Deers can only find food during the day.
+            if (isDay) {
+                nextLocation = findFood(currentField, isDay, weather);
 
+            } else {
+                nextLocation = getLocation();
+            }
 
             if (nextLocation == null && !freeLocations.isEmpty()) {
                 // No food found - try to move to a free location.
@@ -92,12 +96,9 @@ public class Deer extends Animal {
 
     protected Location findFood(Field field, boolean isDay, String weather) {
         List<Location> adjacent;
-        //Deers can look for food further during the day than the night.
-        if (isDay) {
-            adjacent = field.getAdjacentLocations(getLocation(), 2);
-        } else {
-            adjacent = field.getAdjacentLocations(getLocation(), 1);
-        }
+
+        adjacent = field.getAdjacentLocations(getLocation(), 2);
+
 
         Iterator<Location> it = adjacent.iterator();
         Location foodLocation = null;
