@@ -1,42 +1,37 @@
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
+
 /**
- * Write a description of class Weather here.
+ * A class that generates a random weather from the available weather and
+ * stores it in the currentWeather variable so that it can be accessed.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Aashwin Eldo
+ * @version 1.0
  */
-public class Weather
-{
+public class Weather {
     private String currentWeather;
 
     /**
      * This generates a random weather from the available weather and
      * stores it in the currentWeather variable so that it can be accessed.
      */
-    public void setRandomWeather(){
+    public void setRandomWeather() {
         Random rand = Randomizer.getRandom();
         int probabilityOfWeather = rand.nextInt(1000) + 1;
-        
-        if (probabilityOfWeather <= 450){
+
+        if (probabilityOfWeather <= 450) {
             currentWeather = "rain";
-        }
-        else if (probabilityOfWeather <= 940){
+        } else if (probabilityOfWeather <= 940) {
             currentWeather = "sunny";
-        }
-        else if (probabilityOfWeather <= 950){
+        } else if (probabilityOfWeather <= 950) {
             currentWeather = "snow";
-        }
-        else if (probabilityOfWeather <= 975){
+        } else if (probabilityOfWeather <= 975) {
             currentWeather = "lightning";
-        }
-        else{
+        } else {
             currentWeather = "tornado";
         }
     }
-    
-    public String getWeather(){
+
+    public String getWeather() {
         return currentWeather;
     }
 }

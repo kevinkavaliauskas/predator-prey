@@ -121,17 +121,17 @@ public class Simulator {
 
                 Location location = new Location(row, col);
 
-                // Get the animal at the location
-                Entity animal = nextFieldState.getAnimalAt(location);
+                // Get the entity at the location
+                Entity entity = nextFieldState.getEntityAt(location);
 
                 // Check if the location is empty
-                if (animal == null) {
+                if (entity == null) {
                     double probability = Randomizer.getRandom().nextDouble(); // Generate one random number
                     // If the probability is less than the plant creation probability, create a
                     // plant
                     if (probability <= (PLANT_CREATION_PROBABILITY) / 10) {
                         Plant plant = new Plant(true, location, false);
-                        nextFieldState.placeAnimal(plant, location);
+                        nextFieldState.placeEntity(plant, location);
                     }
                 }
 
@@ -168,23 +168,22 @@ public class Simulator {
 
                 if (probability <= WOLF_CREATION_PROBABILITY) {
                     Wolf wolf = new Wolf(true, location, false);
-                    field.placeAnimal(wolf, location);
+                    field.placeEntity(wolf, location);
                 } else if (probability <= (WOLF_CREATION_PROBABILITY + DEER_CREATION_PROBABILITY)) {
                     Deer deer = new Deer(true, location, false);
-                    field.placeAnimal(deer, location);
+                    field.placeEntity(deer, location);
                 } else if (probability <= (WOLF_CREATION_PROBABILITY + DEER_CREATION_PROBABILITY
                         + PLANT_CREATION_PROBABILITY)) {
                     Plant plant = new Plant(true, location, true);
-                    field.placeAnimal(plant, location);
-
+                    field.placeEntity(plant, location);
                 } else if (probability <= (WOLF_CREATION_PROBABILITY + DEER_CREATION_PROBABILITY
                         + PLANT_CREATION_PROBABILITY + BEAR_CREATION_PROBABILITY)) {
                     Bear bear = new Bear(true, location, false);
-                    field.placeAnimal(bear, location);
+                    field.placeEntity(bear, location);
                 } else if (probability <= (WOLF_CREATION_PROBABILITY + DEER_CREATION_PROBABILITY
                         + PLANT_CREATION_PROBABILITY + BEAR_CREATION_PROBABILITY + MOUSE_CREATION_PROBABILITY)) {
                     Mouse mouse = new Mouse(true, location, false);
-                    field.placeAnimal(mouse, location);
+                    field.placeEntity(mouse, location);
                 }
             }
         }
