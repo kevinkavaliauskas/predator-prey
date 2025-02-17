@@ -144,8 +144,8 @@ public class Wolf extends Animal
         List<Location> adjacent;
         Location foodLocation;
         if (foodLevel <15){
-            if (!isDay && (weather.equals("sunny"))){ //Wolf can check 2 steps if it is day and if the weather is good.
-                adjacent = field.getAdjacentLocations(getLocation(), 2); //Wolf can check for food 2 steps at night.
+            if (!isDay && (weather.equals("sunny"))){ //Wolf can check 2 steps if it is night and if the weather is good.
+                adjacent = field.getAdjacentLocations(getLocation(), 2); 
             }
             else{
                 adjacent = field.getAdjacentLocations(getLocation(), 1); //During day they can only check 1 step.
