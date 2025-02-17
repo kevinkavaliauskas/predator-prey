@@ -88,7 +88,7 @@ public abstract class Animal extends Entity {
         return false;
     }
     
-    protected abstract boolean isMaleNearby(Field currentField);
+    protected abstract Location isMaleNearby(Field currentField);
 
     
     /**
