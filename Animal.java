@@ -15,13 +15,13 @@ public abstract class Animal extends Entity {
     protected int MAX_AGE;
     
     // The likelihood of a Prey breeding.
-    protected final double BREEDING_PROBABILITY;
+    protected double BREEDING_PROBABILITY;
     
     // The age at which a Prey can start to breed.
-    protected final int BREEDING_AGE;
+    protected int BREEDING_AGE;
     
     // The maximum number of births.
-    protected final int MAX_LITTER_SIZE;
+    protected int MAX_LITTER_SIZE;
     
     //The Food level of this animal
     protected int foodLevel;
@@ -52,6 +52,30 @@ public abstract class Animal extends Entity {
         this.gender = rand.nextBoolean() ? "female" : "male"; // Assigns a random gender to the Animal.
         this.infected = infected;
         age = 0;
+    }
+
+    protected double getBreedingProbability() {
+        return BREEDING_PROBABILITY;
+    }
+
+    protected int getBreedingAge() {
+        return BREEDING_AGE;
+    }
+
+    protected void setBreedingProbability(double breedingProbability) {
+        this.BREEDING_PROBABILITY = breedingProbability;
+    }
+
+    protected void setBreedingAge(int breedingAge) {
+        this.BREEDING_AGE = breedingAge;
+    }
+
+    protected int getMaxLitterSize() {
+        return MAX_LITTER_SIZE;
+    }
+
+    protected void setMaxLitterSize(int maxLitterSize) {
+        this.MAX_LITTER_SIZE = maxLitterSize;
     }
     
     //100% chance of getting infected through spread

@@ -18,7 +18,7 @@ public class Rabbit extends Animal {
      * @param randomAge If true, the rabbit will have random age.
      * @param location  The location within the field.
      */
-    public Rabbit(boolean randomAge, Location location, boolean infected) {
+    public Rabbit(boolean randomAge, Location location, boolean infected, double breedingProbability, int breedingAge, int maxLitterSize) {
         super(location, 5, 20, 0.32, 12, infected); // Constructor of prey class for rabbit class
         
         if (randomAge) {
@@ -221,14 +221,48 @@ public class Rabbit extends Animal {
         if (births > 0) { // If the breed method has provided a number of births greater than 0
             for (int b = 0; b < births && !freeLocations.isEmpty(); b++) {
                 Location loc = freeLocations.remove(0);
+
+                // get male rabbit
+                Rabbit male = null;
+                Entity maleRabbit = currentField.getAnimalAt(maleLocation);
+                if (maleRabbit instanceof Rabbit) {
+                    male = (Rabbit) maleRabbit;
+                }
+
+                // get male rabbit breeding probability, age, litter size
+                double maleBreedingProbability = male.getBreedingProbability();
+                int maleBreedingAge = male.getBreedingAge();
+                int maleMaxLitterSize = male.getMaxLitterSize();
+
+                // get parent breeding probability, age, litter size
+                double breedingProbability = getBreedingProbability();
+                int breedingAge = getBreedingAge();
+                int maxLitterSize = getMaxLitterSize();
+
+                // calculate new breeding probability, age, litter size by averaging
+                double newBreedingProbability = (breedingProbability + maleBreedingProbability) / 2;
+                int newBreedingAge = (breedingAge + maleBreedingAge) / 2;
+                int newMaxLitterSize = (maxLitterSize + maleMaxLitterSize) / 2;
+
+                // 2% chance of having a mutation to increase breeding probability and litter size
+                double mutationChance = rand.nextDouble();
+                if (mutationChance <= 0.02) {
+                    newBreedingProbability = newBreedingProbability * 3;
+                    newMaxLitterSize = newMaxLitterSize * 3;
+                }
+                // 2% chance of having a mutation to decrease breeding probability and litter size
+                else if (mutationChance >= 0.98 ) {
+                    newBreedingProbability = newBreedingProbability / 3;
+                    newMaxLitterSize = newMaxLitterSize / 3;
+                }
                 
                 //If Infected, 20% chance that the children will also be infected
                 if(infected && rand.nextDouble()<=0.2){
-                    Rabbit young = new Rabbit(false, loc, true);
+                    Rabbit young = new Rabbit(false, loc, true, newBreedingProbability, newBreedingAge, newMaxLitterSize);
                     nextFieldState.placeAnimal(young, loc);
                 }
                 else{
-                    Rabbit young = new Rabbit(false, loc, false);
+                    Rabbit young = new Rabbit(false, loc, false, newBreedingProbability, newBreedingAge, newMaxLitterSize);
                     nextFieldState.placeAnimal(young, loc);
                 }
                 
