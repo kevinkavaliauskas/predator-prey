@@ -193,7 +193,7 @@
                 Location loc = freeLocations.remove(0);
                 Animal young = createChild(loc, maleLocation, currentField);
                 if (young != null) {
-                    nextFieldState.placeAnimal(young, loc);
+                    nextFieldState.placeEntity(young, loc);
                 }
             }
         }

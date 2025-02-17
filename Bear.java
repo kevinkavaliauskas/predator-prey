@@ -44,16 +44,12 @@ public class Bear extends Animal
                                                                                                        // the same radius. To see who disease can be spread to.
         // Checks each adjacent location if there is a Bear in each one. 
         for (Location location : adjacentLocations) {
-            Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
+            Entity animal = currentField.getEntityAt(location); // Gets the animal at this location.
             //More likely to spread disease at day than night.
-            if(isDay){
-                if (animal instanceof Bear && !((Bear) animal).getInfectedStatus() && rand.nextDouble()<=0.01) { 
-                    ((Animal)animal).getInfected();
-                }
-            }
-            else{
-                if (animal instanceof Bear && !((Bear) animal).getInfectedStatus() && rand.nextDouble()<=0.001) { 
-                    ((Animal)animal).getInfected();
+            if (animal instanceof Bear bear && !bear.getInfectedStatus()) {
+                double infectionChance = isDay ? 0.01 : 0.001; // More likely to spread during the day.
+                if (rand.nextDouble() <= infectionChance) {
+                    ((Animal) bear).getInfected();
                 }
             }
             
@@ -130,7 +126,7 @@ public class Bear extends Animal
             // See if it was possible to move.
             if (nextLocation != null) {
                 setLocation(nextLocation);
-                nextFieldState.placeAnimal(this, nextLocation);
+                nextFieldState.placeEntity(this, nextLocation);
             } 
                 
             else {
@@ -179,7 +175,7 @@ public class Bear extends Animal
             foodLocation = null;
             while(foodLocation == null && it.hasNext()) {
                 Location loc = it.next();
-                Entity animal = field.getAnimalAt(loc);
+                Entity animal = field.getEntityAt(loc);
                 if(animal instanceof Deer dear) {
                     if(dear.isAlive()) {
                         dear.setDead();
@@ -233,7 +229,7 @@ public class Bear extends Animal
         // Checks each adjacent location if there is a Bear in each one. If there is a
         // male Bear in one, then breeding can occur.
         for (Location location : adjacentLocations) {
-            Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
+            Entity animal = currentField.getEntityAt(location); // Gets the animal at this location.
             if (animal instanceof Bear && ((Bear) animal).getGender().equals("male")) { // Checks if the animal is a
                                                                                             // male
                 return location;
@@ -277,7 +273,7 @@ public class Bear extends Animal
     protected Animal createChild(Location loc, Location maleLocation, Field field) {
         // Get male Bear
         Bear male = null;
-        Entity maleBear = field.getAnimalAt(maleLocation);
+        Entity maleBear = field.getEntityAt(maleLocation);
         if (maleBear instanceof Bear) {
             male = (Bear) maleBear;
         }

@@ -68,13 +68,9 @@ public class Deer extends Animal {
             // Move towards a source of food if found.
 
             Location nextLocation;
-            // Deers can only find food during the day.
-            if (isDay) {
-                nextLocation = findFood(currentField, isDay, weather);
+            
+            nextLocation = findFood(currentField, isDay, weather);
 
-            } else {
-                nextLocation = getLocation();
-            }
 
             if (nextLocation == null && !freeLocations.isEmpty()) {
                 // No food found - try to move to a free location.
@@ -83,7 +79,7 @@ public class Deer extends Animal {
             // See if it was possible to move.
             if (nextLocation != null) {
                 setLocation(nextLocation);
-                nextFieldState.placeAnimal(this, nextLocation);
+                nextFieldState.placeEntity(this, nextLocation);
             }
 
             else {
@@ -96,6 +92,7 @@ public class Deer extends Animal {
 
     protected Location findFood(Field field, boolean isDay, String weather) {
         List<Location> adjacent;
+        //Deers can look for food further during the day than the night.
         if (isDay) {
             adjacent = field.getAdjacentLocations(getLocation(), 2);
         } else {
@@ -106,7 +103,7 @@ public class Deer extends Animal {
         Location foodLocation = null;
         while (foodLocation == null && it.hasNext()) {
             Location loc = it.next();
-            Entity animal = field.getAnimalAt(loc);
+            Entity animal = field.getEntityAt(loc);
             if (animal instanceof Plant plant) {
                 if (plant.isAlive()) {
                     plant.setDead();
@@ -126,7 +123,7 @@ public class Deer extends Animal {
         // Checks each adjacent location if there is a Deer in each one. If there is a
         // male Deer in one, then breeding can occur.
         for (Location location : adjacentLocations) {
-            Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
+            Entity animal = currentField.getEntityAt(location); // Gets the animal at this location.
             if (animal instanceof Deer && ((Deer) animal).getGender().equals("male")) { // Checks if the animal is a
                                                                                         // male
                 return location;
@@ -145,15 +142,12 @@ public class Deer extends Animal {
                                                                                                 // be spread to.
         // Checks each adjacent location if there is a Deer in each one.
         for (Location location : adjacentLocations) {
-            Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
+            Entity animal = currentField.getEntityAt(location); // Gets the animal at this location.
             // More likely to spread disease at day than night.
-            if (isDay) {
-                if (animal instanceof Deer && !((Deer) animal).getInfectedStatus() && rand.nextDouble() <= 0.01) {
-                    ((Animal) animal).getInfected();
-                }
-            } else {
-                if (animal instanceof Deer && !((Deer) animal).getInfectedStatus() && rand.nextDouble() <= 0.001) {
-                    ((Animal) animal).getInfected();
+            if (animal instanceof Deer deer && !deer.getInfectedStatus()) {
+                double infectionChance = isDay ? 0.01 : 0.001; // More likely to spread during the day.
+                if (rand.nextDouble() <= infectionChance) {
+                    ((Animal) deer).getInfected();
                 }
             }
 
@@ -224,7 +218,7 @@ public class Deer extends Animal {
     protected Animal createChild(Location loc, Location maleLocation, Field field) {
         // Get male Deer
         Deer male = null;
-        Entity maleDeer = field.getAnimalAt(maleLocation);
+        Entity maleDeer = field.getEntityAt(maleLocation);
         if (maleDeer instanceof Deer) {
             male = (Deer) maleDeer;
         }

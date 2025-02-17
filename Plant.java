@@ -60,7 +60,7 @@ public class Plant extends Entity
         
         if (this.getLocation() != null) {
             // Plants stay in the same location
-            nextFieldState.placeAnimal(this, this.getLocation());
+            nextFieldState.placeEntity(this, this.getLocation());
         }
         
         lastRain++;

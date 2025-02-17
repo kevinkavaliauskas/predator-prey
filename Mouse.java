@@ -92,7 +92,7 @@ public class Mouse extends Animal {
             // See if it was possible to move.
             if (nextLocation != null) {
                 setLocation(nextLocation);
-                nextFieldState.placeAnimal(this, nextLocation);
+                nextFieldState.placeEntity(this, nextLocation);
             } 
                 
             else {
@@ -116,7 +116,7 @@ public class Mouse extends Animal {
         Location foodLocation = null;
         while (foodLocation == null && it.hasNext()) {
             Location loc = it.next();
-            Entity animal = field.getAnimalAt(loc);
+            Entity animal = field.getEntityAt(loc);
             if (animal instanceof Plant plant) {
                 if (plant.isAlive() && plant.getHeight()<=3)  { //Mouse can only eat small plants.
                     plant.setDead();
@@ -136,7 +136,7 @@ public class Mouse extends Animal {
         // Checks each adjacent location if there is a rabbit in each one. If there is a
         // male rabbit in one, then breeding can occur.
         for (Location location : adjacentLocations) {
-            Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
+            Entity animal = currentField.getEntityAt(location); // Gets the animal at this location.
             if (animal instanceof Mouse && ((Mouse) animal).getGender().equals("male")) { // Checks if the animal is a male
                 return location;
             }
@@ -149,7 +149,7 @@ public class Mouse extends Animal {
                                                                                                        // the same radius. To see who disease can be spread to.
         // Checks each adjacent location if there is an animal in each one. Mice can spread disease to all animals of all types.
         for (Location location : adjacentLocations) {
-            Entity entity = currentField.getAnimalAt(location); // Gets the animal at this location.
+            Entity entity = currentField.getEntityAt(location); // Gets the animal at this location.
             if (entity instanceof Animal animal && !animal.getInfectedStatus()) {
                 double infectionChance = isDay ? 0.01 : 0.001; // More likely to spread during the day.
                 if (rand.nextDouble() <= infectionChance) { 
@@ -227,7 +227,7 @@ public class Mouse extends Animal {
     protected Animal createChild(Location loc, Location maleLocation, Field field) {
         // Get male Mouse
         Mouse male = null;
-        Entity maleMouse = field.getAnimalAt(maleLocation);
+        Entity maleMouse = field.getEntityAt(maleLocation);
         if (maleMouse instanceof Mouse) {
             male = (Mouse) maleMouse;
         }

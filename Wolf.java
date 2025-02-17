@@ -42,16 +42,12 @@ public class Wolf extends Animal
                                                                                                        // the same radius. To see who disease can be spread to.
         // Checks each adjacent location if there is a Deer in each one. 
         for (Location location : adjacentLocations) {
-            Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
+            Entity animal = currentField.getEntityAt(location); // Gets the animal at this location.
             //More likely to spread disease at day than night.
-            if(isDay){
-                if (animal instanceof Wolf && !((Wolf) animal).getInfectedStatus() && rand.nextDouble()<=0.01) { 
-                    ((Animal)animal).getInfected();
-                }
-            }
-            else{
-                if (animal instanceof Wolf && !((Wolf) animal).getInfectedStatus() && rand.nextDouble()<=0.001) { 
-                    ((Animal)animal).getInfected();
+            if (animal instanceof Wolf wolf && !wolf.getInfectedStatus()) {
+                double infectionChance = isDay ? 0.01 : 0.001; // More likely to spread during the day.
+                if (rand.nextDouble() <= infectionChance) {
+                    ((Animal) wolf).getInfected();
                 }
             }
             
@@ -110,7 +106,7 @@ public class Wolf extends Animal
             // See if it was possible to move.
             if(nextLocation != null) {
                 setLocation(nextLocation);
-                nextFieldState.placeAnimal(this, nextLocation);
+                nextFieldState.placeEntity(this, nextLocation);
             }
             else {
                 // Overcrowding.
@@ -158,7 +154,7 @@ public class Wolf extends Animal
             foodLocation = null;
             while(foodLocation == null && it.hasNext()) {
                 Location loc = it.next();
-                Entity animal = field.getAnimalAt(loc);
+                Entity animal = field.getEntityAt(loc);
                     if(animal instanceof Deer deer) {
                     if(deer.isAlive()) {
                         deer.setDead();
@@ -204,7 +200,7 @@ public class Wolf extends Animal
         // Checks each adjacent location if there is a Wolf in each one. If there is a
         // male Wolf in one, then breeding can occur.
         for (Location location : adjacentLocations) {
-            Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
+            Entity animal = currentField.getEntityAt(location); // Gets the animal at this location.
             if (animal instanceof Wolf && ((Wolf) animal).getGender().equals("male")) { // Checks if the animal is a
                                                                                             // male
                 return location;
@@ -248,7 +244,7 @@ public class Wolf extends Animal
     protected Animal createChild(Location loc, Location maleLocation, Field field) {
         // Get male Wolf
         Wolf male = null;
-        Entity maleWolf = field.getAnimalAt(maleLocation);
+        Entity maleWolf = field.getEntityAt(maleLocation);
         if (maleWolf instanceof Wolf) {
             male = (Wolf) maleWolf;
         }
