@@ -161,7 +161,7 @@ public class Simulator {
                 Location location = new Location(row, col);
 
                 if (probability <= FOX_CREATION_PROBABILITY) {
-                    Fox fox = new Fox(true, location);
+                    Fox fox = new Fox(true, location, false);
                     field.placeAnimal(fox, location);
                 } else if (probability <= (FOX_CREATION_PROBABILITY + RABBIT_CREATION_PROBABILITY)) {
                     Rabbit rabbit = new Rabbit(true, location, false);

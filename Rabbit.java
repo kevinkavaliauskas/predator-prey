@@ -19,7 +19,7 @@ public class Rabbit extends Animal {
      * @param location  The location within the field.
      */
     public Rabbit(boolean randomAge, Location location, boolean infected) {
-        super(location, 5, 20, 0.32, 12, infected); // Constructor of prey class for rabbit class
+        super(location, 5, 20, 0.32, 12, infected); // Constructor of Animal class for rabbit class
         
         if (randomAge) {
             setAge(rand.nextInt(MAX_AGE));
@@ -53,14 +53,16 @@ public class Rabbit extends Animal {
         }
         
         //Can only get infected if not already infected
-        // if(!infected){
-        //     getInfected();
-        // }
+         if(!infected){
+             getInfectedPassive();
+        }
         
         
         
-        //Spread Disease to other members of the same species in adjacent tiles.
-        spreadDisease(currentField, isDay);
+        //Spread Disease to other members of the same species in adjacent tiles if already infected.
+        if(infected){
+            spreadDisease(currentField, isDay);
+        }
         
         
         
@@ -184,97 +186,7 @@ public class Rabbit extends Animal {
         }
     }
 
-    /**
-     * Check whether or not this rabbit is to give birth at this step.
-     * New births will be made into free adjacent locations.
-     * 
-     * @param nextFieldState The field to update.
-     * @param freeLocations  The locations that are free in the field.
-     */
 
-    protected void giveBirth(Field nextFieldState, List<Location> freeLocations, Field currentField, boolean isDay) {
-        // If it is not daytime, rabbits cannot breed.
-        if (!isDay) {
-            return;
-        }
-
-        // If the rabbits gender is not female, it cannot breed.
-        if (!isGenderFemale()) {
-            return;
-        }
-        
-        //If infected there is a 20% chance it cannot breed. 
-        if (infected) {
-            if (rand.nextDouble() < 0.2) {
-                return;
-            }
-        }
-
-        // Check if there's a male rabbit nearby before attempting to breed
-        Location maleLocation = isMaleNearby(currentField);
-        if (maleLocation == null) {
-            return; // No male nearby, so no breeding occurs
-        }
-
-        // New rabbits are born into adjacent locations.
-        int births = breed(); // Triggers the breed method which checks if a rabbit can breed.
-        if (births > 0) { // If the breed method has provided a number of births greater than 0
-            for (int b = 0; b < births && !freeLocations.isEmpty(); b++) {
-                Location loc = freeLocations.remove(0);
-
-                // get male rabbit
-                Rabbit male = null;
-                Entity maleRabbit = currentField.getAnimalAt(maleLocation);
-                if (maleRabbit instanceof Rabbit) {
-                    male = (Rabbit) maleRabbit;
-                }
-
-                // get male rabbit breeding probability, age, litter size
-                double maleBreedingProbability = male.getBreedingProbability();
-                int maleBreedingAge = male.getBreedingAge();
-                int maleMaxLitterSize = male.getMaxLitterSize();
-
-                // get parent breeding probability, age, litter size
-                double breedingProbability = getBreedingProbability();
-                int breedingAge = getBreedingAge();
-                int maxLitterSize = getMaxLitterSize();
-
-                // calculate new breeding probability, age, litter size by averaging
-                double newBreedingProbability = (breedingProbability + maleBreedingProbability) / 2;
-                int newBreedingAge = (breedingAge + maleBreedingAge) / 2;
-                int newMaxLitterSize = (maxLitterSize + maleMaxLitterSize) / 2;
-
-                // 2% chance of having a mutation to increase breeding probability and litter size
-                double mutationChance = rand.nextDouble();
-                if (mutationChance <= 0.02) {
-                    newBreedingProbability = newBreedingProbability * 3;
-                    newMaxLitterSize = newMaxLitterSize * 3;
-                }
-                // 2% chance of having a mutation to decrease breeding probability and litter size
-                else if (mutationChance >= 0.98 ) {
-                    newBreedingProbability = newBreedingProbability / 3;
-                    newMaxLitterSize = newMaxLitterSize / 3;
-                }
-                
-                //If Infected, 20% chance that the children will also be infected
-                if(infected && rand.nextDouble()<=0.2){
-                    Rabbit young = new Rabbit(false, loc, true);
-                    young.setBreedingProbability(newBreedingProbability);
-                    young.setBreedingAge(newBreedingAge);
-                    young.setMaxLitterSize(newMaxLitterSize);
-                    nextFieldState.placeAnimal(young, loc);
-                }
-                else{
-                    Rabbit young = new Rabbit(false, loc, false);
-                    young.setBreedingProbability(newBreedingProbability);
-                    young.setBreedingAge(newBreedingAge);
-                    young.setMaxLitterSize(newMaxLitterSize);
-                    nextFieldState.placeAnimal(young, loc);
-                }
-                
-            }
-        }
-    }
 
     /**
      * Generate a number representing the number of births,
@@ -283,9 +195,9 @@ public class Rabbit extends Animal {
      * @return The number of births (may be zero).
      */
     @Override
-    protected int breed() {
+    protected int breed(boolean isDay) {
         int births = 0;
-        if (canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
+        if (canBreed(isDay) && rand.nextDouble() <= BREEDING_PROBABILITY) {
             births = rand.nextInt(MAX_LITTER_SIZE) + 1;
         }
         return births;
@@ -297,7 +209,62 @@ public class Rabbit extends Animal {
      * @return true if the rabbit can breed, false otherwise.
      */
     @Override
-    protected boolean canBreed() {
-        return getAge() >= BREEDING_AGE;
+    protected boolean canBreed(boolean isDay)
+    {
+        if (age >= BREEDING_AGE && isDay){ //Rabbits can only breed at night
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+     /**
+     * Creates a new young rabbit
+     * @param loc The location for the new rabbit
+     * @param maleLocation Location of the male parent
+     * @param field The current field
+     * @return A new young rabbit
+     */
+    @Override
+    protected Animal createChild(Location loc, Location maleLocation, Field field) {
+        // Get male rabbit
+        Rabbit male = null;
+        Entity maleRabbit = field.getAnimalAt(maleLocation);
+        if (maleRabbit instanceof Rabbit) {
+            male = (Rabbit) maleRabbit;
+        }
+        
+        if (male == null) {
+            return null;
+        }
+        
+        // Calculate genetics from both parents
+        double maleBreedingProbability = male.getBreedingProbability();
+        int maleBreedingAge = male.getBreedingAge();
+        int maleMaxLitterSize = male.getMaxLitterSize();
+        
+        double newBreedingProbability = (getBreedingProbability() + maleBreedingProbability) / 2;
+        int newBreedingAge = (getBreedingAge() + maleBreedingAge) / 2;
+        int newMaxLitterSize = (getMaxLitterSize() + maleMaxLitterSize) / 2;
+        
+        // Handle mutations
+        double mutationChance = rand.nextDouble();
+        if (mutationChance <= 0.02) {
+            newBreedingProbability *= 3;
+            newMaxLitterSize *= 3;
+        } else if (mutationChance >= 0.98) {
+            newBreedingProbability /= 3;
+            newMaxLitterSize /= 3;
+        }
+        
+        // Create young rabbit with calculated traits
+        boolean childInfected = infected && rand.nextDouble() <= 0.2;
+        Rabbit child = new Rabbit(false, loc, childInfected);
+        child.setBreedingProbability(newBreedingProbability);
+        child.setBreedingAge(newBreedingAge);
+        child.setMaxLitterSize(newMaxLitterSize);
+        
+        return child;
     }
 }

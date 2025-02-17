@@ -25,9 +25,9 @@ public class Fox extends Animal
      * @param randomAge If true, the fox will have random age and hunger level.
      * @param location The location within the field.
      */
-    public Fox(boolean randomAge, Location location)
+    public Fox(boolean randomAge, Location location, boolean infected)
     {
-        super(location, 5, 150, 1, 8, false);
+        super(location, 5, 150, 1, 8, infected);
         
         if(randomAge) {
             setAge(rand.nextInt(MAX_AGE));
@@ -37,7 +37,25 @@ public class Fox extends Animal
     }
     
     protected void spreadDisease(Field currentField, boolean isDay){
-        int x = 1;
+        List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation(), 1); //Get all adjacent location to check if their are any of the same species within
+                                                                                                       // the same radius. To see who disease can be spread to.
+        // Checks each adjacent location if there is a rabbit in each one. 
+        for (Location location : adjacentLocations) {
+            Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
+            //More likely to spread disease at day than night.
+            if(isDay){
+                if (animal instanceof Fox && !((Fox) animal).getInfectedStatus() && rand.nextDouble()<=0.01) { 
+                    ((Animal)animal).getInfected();
+                }
+            }
+            else{
+                if (animal instanceof Fox && !((Fox) animal).getInfectedStatus() && rand.nextDouble()<=0.001) { 
+                    ((Animal)animal).getInfected();
+                }
+            }
+            
+        }
+                                                                                            
     }
     
     /**
@@ -51,6 +69,31 @@ public class Fox extends Animal
     {
         incrementAge();
         incrementHunger();
+        
+        
+        //Can only get cured if infected, will always be infected for at least one step.
+        if(infected){
+            //Every turn infected, their max age will decrease by 10%.
+            MAX_AGE = (int)(0.95 * MAX_AGE);
+            getCured();
+            if (rand.nextDouble() <0.05){
+                setDead();
+            }
+        }
+        
+        //Can only get infected if not already infected
+         if(!infected){
+             getInfectedPassive();
+        }
+        
+        
+        
+        //Spread Disease to other members of the same species in adjacent tiles.
+        if(infected){
+            spreadDisease(currentField, isDay);
+        }
+        
+        
         if(isAlive()) {
             List<Location> freeLocations = nextFieldState.getFreeAdjacentLocations(getLocation(), 1);
             if(! freeLocations.isEmpty()) {
@@ -73,6 +116,8 @@ public class Fox extends Animal
             }
         }
     }
+    
+    
     
 
         
@@ -138,45 +183,14 @@ public class Fox extends Animal
         return foodLocation;
     }
     
-    /**
-     * Check whether this fox is to give birth at this step.
-     * New births will be made into free adjacent locations.
-     * @param freeLocations The locations that are free in the current field.
-     */
-    protected void giveBirth(Field nextFieldState, List<Location> freeLocations, Field currentField, boolean isDay) {
-        // If the Foxes gender is not female, it cannot breed.
-        if (!isGenderFemale()) {
-            return;
-        }
-
-        // Check if there's a male Foxes nearby before attempting to breed
-        Location maleLocation = isMaleNearby(currentField);
-        if (maleLocation == null) {
-            return; // No male nearby, so no breeding occurs
-        }
-        
-        if (isDay) {
-            return; //Foxes can only breed at night.
-        }
-
-        // New rabbits are born into adjacent locations.
-        int births = breed(); // Triggers the breed method which checks if a Fox can breed.
-        if (births > 0) { // If the breed method has provided a number of births greater than 0
-            for (int b = 0; b < births && !freeLocations.isEmpty(); b++) {
-                Location loc = freeLocations.remove(0);
-                Fox young = new Fox(false, loc);
-                nextFieldState.placeAnimal(young, loc);
-            }
-        }
-    }
     
     protected Location isMaleNearby(Field currentField) {
         List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation(), 1); // Gets all adjacent
                                                                                              // locations to check if
-                                                                                             // there is a male rabbit
+                                                                                             // there is a male Fox
                                                                                              // nearby.
-        // Checks each adjacent location if there is a rabbit in each one. If there is a
-        // male rabbit in one, then breeding can occur.
+        // Checks each adjacent location if there is a Fox in each one. If there is a
+        // male Fox in one, then breeding can occur.
         for (Location location : adjacentLocations) {
             Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
             if (animal instanceof Fox && ((Fox) animal).getGender().equals("male")) { // Checks if the animal is a
@@ -194,10 +208,10 @@ public class Fox extends Animal
      * if it can breed.
      * @return The number of births (may be zero).
      */
-    protected int breed()
+    protected int breed(boolean isDay)
     {
         int births;
-        if(canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
+        if(canBreed(isDay) && rand.nextDouble() <= BREEDING_PROBABILITY) {//Checks if the animal is capable of breeding
             births = rand.nextInt(MAX_LITTER_SIZE) + 1;
         }
         else {
@@ -207,10 +221,56 @@ public class Fox extends Animal
     }
 
     /**
-     * A fox can breed if it has reached the breeding age.
+     * A fox can breed if it has reached the breeding age and if the time of day currently is night.
      */
-    protected boolean canBreed()
+    protected boolean canBreed(boolean isDay)
     {
-        return age >= BREEDING_AGE;
+        if (age >= BREEDING_AGE && !isDay){ //Foxes can only breed at night
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    protected Animal createChild(Location loc, Location maleLocation, Field field) {
+        // Get male Fox
+        Fox male = null;
+        Entity maleFox = field.getAnimalAt(maleLocation);
+        if (maleFox instanceof Fox) {
+            male = (Fox) maleFox;
+        }
+        
+        if (male == null) {
+            return null;
+        }
+        
+        // Calculate genetics from both parents
+        double maleBreedingProbability = male.getBreedingProbability();
+        int maleBreedingAge = male.getBreedingAge();
+        int maleMaxLitterSize = male.getMaxLitterSize();
+        
+        double newBreedingProbability = (getBreedingProbability() + maleBreedingProbability) / 2;
+        int newBreedingAge = (getBreedingAge() + maleBreedingAge) / 2;
+        int newMaxLitterSize = (getMaxLitterSize() + maleMaxLitterSize) / 2;
+        
+        // Handle mutations
+        double mutationChance = rand.nextDouble();
+        if (mutationChance <= 0.02) {
+            newBreedingProbability *= 3;
+            newMaxLitterSize *= 3;
+        } else if (mutationChance >= 0.98) {
+            newBreedingProbability /= 3;
+            newMaxLitterSize /= 3;
+        }
+        
+        // Create young Fox with calculated traits
+        boolean childInfected = infected && rand.nextDouble() <= 0.2;
+        Fox child = new Fox(false, loc, childInfected);
+        child.setBreedingProbability(newBreedingProbability);
+        child.setBreedingAge(newBreedingAge);
+        child.setMaxLitterSize(newMaxLitterSize);
+        
+        return child;
     }
 }

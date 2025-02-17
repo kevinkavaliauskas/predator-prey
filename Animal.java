@@ -1,12 +1,12 @@
-import java.util.List;
-
-/**
- * Write a description of class Predator here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
-public abstract class Animal extends Entity {
+    import java.util.List;
+    
+    /**
+     * Write a description of class Predator here.
+     *
+     * @author (your name)
+     * @version (a version number or a date)
+     */
+    public abstract class Animal extends Entity {
     // Characteristics shared by all prey (class variables)
     // The age of the prey
     protected int age;
@@ -85,7 +85,7 @@ public abstract class Animal extends Entity {
     
     //1% of randomly getting infected by disease every step.
     protected void getInfectedPassive(){
-        if (rand.nextDouble() <= 0.01){
+        if (rand.nextDouble() <= 0.0001){
             getInfected();  
         }
     }
@@ -160,20 +160,49 @@ public abstract class Animal extends Entity {
      * Check whether or not this prey can breed.
      * @return true if the prey can breed, false otherwise.
      */
-    protected abstract boolean canBreed();
+    protected abstract boolean canBreed(boolean isDay);
     
     /**
-     * Check whether or not this rabbit is to give birth at this step.
+     * 
+     Check whether or not this animal is to give birth at this step.
      * New births will be made into free adjacent locations.
      * @param nextFieldState The field to update.
      * @param freeLocations The locations that are free in the field.
+     * @param currentField The current field state.
+     * @param isDay Whether it is day or night.
      */
-    protected abstract void giveBirth(Field nextFieldState, List<Location> freeLocations, Field currentField, boolean isDay);
+    protected void giveBirth(Field nextFieldState, List<Location> freeLocations, Field currentField, boolean isDay) {
+        //Only Females can give birth
+        if (!isGenderFemale()) {
+            return;
+        }
+        
+        //Male must be nearby to be able to breed.
+        Location maleLocation = isMaleNearby(currentField);
+        if (maleLocation == null) {
+            return; // No male nearby, so no breeding occurs
+        }
+        
+        
+        //Breeding takes place and animals are generated and placed.
+        int births = breed(isDay);
+        if (births > 0) {
+            for (int b = 0; b < births && !freeLocations.isEmpty(); b++) {
+                Location loc = freeLocations.remove(0);
+                Animal young = createChild(loc, maleLocation, currentField);
+                if (young != null) {
+                    nextFieldState.placeAnimal(young, loc);
+                }
+            }
+        }
+    }
+
+    protected abstract Animal createChild(Location loc, Location maleLocation, Field field);
 
 
     /**
      * Generate a number representing the number of births.
      * @return The number of births (may be zero).
      */
-    protected abstract int breed();
+    protected abstract int breed(boolean isDay);
 }
