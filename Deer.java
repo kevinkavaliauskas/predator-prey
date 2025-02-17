@@ -2,24 +2,24 @@ import java.util.List;
 import java.util.Iterator;
 
 /**
- * A simple model of a rabbit.
- * Rabbits age, move, breed, and die.
+ * A simple model of a Deer.
+ * Deers age, move, breed, and die.
  * 
  * @author David J. Barnes and Michael Kölling
  * @version 7.1
  */
-public class Rabbit extends Animal {
+public class Deer extends Animal {
 
 
     /**
-     * Create a new rabbit. A rabbit may be created with age
+     * Create a new Deer. A Deer may be created with age
      * zero (a new born) or with a random age.
      * 
-     * @param randomAge If true, the rabbit will have random age.
+     * @param randomAge If true, the Deer will have random age.
      * @param location  The location within the field.
      */
-    public Rabbit(boolean randomAge, Location location, boolean infected) {
-        super(location, 5, 20, 0.32, 12, infected); // Constructor of Animal class for rabbit class
+    public Deer(boolean randomAge, Location location, boolean infected) {
+        super(location, 5, 20, 0.32, 12, infected); // Constructor of Animal class for Deer class
         
         if (randomAge) {
             setAge(rand.nextInt(MAX_AGE));
@@ -31,7 +31,7 @@ public class Rabbit extends Animal {
 
     
     /**
-     * This is what the rabbit does most of the time - it runs
+     * This is what the Deer does most of the time - it runs
      * around. Sometimes it will breed or die of old age.
      * 
      * @param currentField   The field currently occupied.
@@ -46,7 +46,8 @@ public class Rabbit extends Animal {
         if(infected){
             //Every turn infected, their max age will decrease by 10%.
             MAX_AGE = (int)(0.9 * MAX_AGE);
-            getCured();
+            //20% chance of getting cured every step.
+            getCured(0.2);
             if (rand.nextDouble() <0.05){
                 setDead();
             }
@@ -74,7 +75,7 @@ public class Rabbit extends Animal {
             // Move towards a source of food if found.
             
             Location nextLocation;
-            //Rabbits can only find food during the day.
+            //Deers can only find food during the day.
             if(isDay){
                 nextLocation = findFood(currentField, isDay, weather);
                 
@@ -129,13 +130,13 @@ public class Rabbit extends Animal {
     protected Location isMaleNearby(Field currentField) {
         List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation(), 1); // Gets all adjacent
                                                                                              // locations to check if
-                                                                                             // there is a male rabbit
+                                                                                             // there is a male Deer
                                                                                              // nearby.
-        // Checks each adjacent location if there is a rabbit in each one. If there is a
-        // male rabbit in one, then breeding can occur.
+        // Checks each adjacent location if there is a Deer in each one. If there is a
+        // male Deer in one, then breeding can occur.
         for (Location location : adjacentLocations) {
             Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
-            if (animal instanceof Rabbit && ((Rabbit) animal).getGender().equals("male")) { // Checks if the animal is a male
+            if (animal instanceof Deer && ((Deer) animal).getGender().equals("male")) { // Checks if the animal is a male
                 return location;
             }
         }
@@ -145,17 +146,17 @@ public class Rabbit extends Animal {
     protected void spreadDisease(Field currentField, boolean isDay){
         List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation(), 1); //Get all adjacent location to check if their are any of the same species within
                                                                                                        // the same radius. To see who disease can be spread to.
-        // Checks each adjacent location if there is a rabbit in each one. 
+        // Checks each adjacent location if there is a Deer in each one. 
         for (Location location : adjacentLocations) {
             Entity animal = currentField.getAnimalAt(location); // Gets the animal at this location.
             //More likely to spread disease at day than night.
             if(isDay){
-                if (animal instanceof Rabbit && !((Rabbit) animal).getInfectedStatus() && rand.nextDouble()<=0.01) { 
+                if (animal instanceof Deer && !((Deer) animal).getInfectedStatus() && rand.nextDouble()<=0.01) { 
                     ((Animal)animal).getInfected();
                 }
             }
             else{
-                if (animal instanceof Rabbit && !((Rabbit) animal).getInfectedStatus() && rand.nextDouble()<=0.001) { 
+                if (animal instanceof Deer && !((Deer) animal).getInfectedStatus() && rand.nextDouble()<=0.001) { 
                     ((Animal)animal).getInfected();
                 }
             }
@@ -166,7 +167,7 @@ public class Rabbit extends Animal {
     
     @Override
     public String toString() {
-        return "Rabbit{" +
+        return "Deer{" +
                 "age=" + getAge() +
                 ", gender=" + getGender() +
                 ", alive=" + isAlive() +
@@ -176,7 +177,7 @@ public class Rabbit extends Animal {
 
     /**
      * Increase the age.
-     * This could result in the rabbit's death.
+     * This could result in the Deer's death.
      */
     @Override
     protected void incrementAge() {
@@ -204,14 +205,14 @@ public class Rabbit extends Animal {
     }
 
     /**
-     * A rabbit can breed if it has reached the breeding age.
+     * A Deer can breed if it has reached the breeding age.
      * 
-     * @return true if the rabbit can breed, false otherwise.
+     * @return true if the Deer can breed, false otherwise.
      */
     @Override
     protected boolean canBreed(boolean isDay)
     {
-        if (age >= BREEDING_AGE && isDay){ //Rabbits can only breed at night
+        if (age >= BREEDING_AGE && isDay){ //Deers can only breed at night
             return true;
         }
         else{
@@ -220,19 +221,19 @@ public class Rabbit extends Animal {
     }
     
      /**
-     * Creates a new young rabbit
-     * @param loc The location for the new rabbit
+     * Creates a new young Deer
+     * @param loc The location for the new Deer
      * @param maleLocation Location of the male parent
      * @param field The current field
-     * @return A new young rabbit
+     * @return A new young Deer
      */
     @Override
     protected Animal createChild(Location loc, Location maleLocation, Field field) {
-        // Get male rabbit
-        Rabbit male = null;
-        Entity maleRabbit = field.getAnimalAt(maleLocation);
-        if (maleRabbit instanceof Rabbit) {
-            male = (Rabbit) maleRabbit;
+        // Get male Deer
+        Deer male = null;
+        Entity maleDeer = field.getAnimalAt(maleLocation);
+        if (maleDeer instanceof Deer) {
+            male = (Deer) maleDeer;
         }
         
         if (male == null) {
@@ -258,9 +259,9 @@ public class Rabbit extends Animal {
             newMaxLitterSize /= 3;
         }
         
-        // Create young rabbit with calculated traits
+        // Create young Deer with calculated traits
         boolean childInfected = infected && rand.nextDouble() <= 0.2;
-        Rabbit child = new Rabbit(false, loc, childInfected);
+        Deer child = new Deer(false, loc, childInfected);
         child.setBreedingProbability(newBreedingProbability);
         child.setBreedingAge(newBreedingAge);
         child.setMaxLitterSize(newMaxLitterSize);

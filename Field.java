@@ -119,21 +119,39 @@ public class Field
      */
     public void fieldStats()
     {
-        int numFoxes = 0, numRabbits = 0;
+        int numWolves = 0, numDeer = 0, numMouse = 0, numBear = 0, numPlants = 0;
         for(Entity anAnimal : field.values()) {
-            if(anAnimal instanceof Fox fox) {
-                if(fox.isAlive()) {
-                    numFoxes++;
+            if(anAnimal instanceof Wolf wolf) {
+                if(wolf.isAlive()) {
+                    numWolves++;
                 }
             }
-            else if(anAnimal instanceof Rabbit rabbit) {
-                if(rabbit.isAlive()) {
-                    numRabbits++;
+            else if(anAnimal instanceof Deer deer) {
+                if(deer.isAlive()) {
+                    numDeer++;
+                }
+            }
+            else if(anAnimal instanceof Mouse mouse) {
+                if(mouse.isAlive()) {
+                    numMouse++;
+                }
+            }
+            else if(anAnimal instanceof Bear bear) {
+                if(bear.isAlive()) {
+                    numBear++;
+                }
+            }
+            else if(anAnimal instanceof Plant plant) {
+                if(plant.isAlive()) {
+                    numPlants++;
                 }
             }
         }
-        System.out.println("Rabbits: " + numRabbits +
-                           " Foxes: " + numFoxes);
+        System.out.println("Deer: " + numDeer +
+                           " Wolves: " + numWolves +
+                           " Plants: " + numPlants +
+                           " Mice: " + numMouse +
+                           " Bear: " + numBear);
     }
 
     /**
@@ -150,23 +168,41 @@ public class Field
      */
     public boolean isViable()
     {
-        boolean rabbitFound = false;
-        boolean foxFound = false;
+        boolean deerFound = false;
+        boolean wolfFound = false;
+        boolean mouseFound = false;
+        boolean bearFound = false;
+        boolean plantFound = false;
         Iterator<Entity> it = animals.iterator();
-        while(it.hasNext() && ! (rabbitFound && foxFound)) {
+        while(it.hasNext() && ! (deerFound && wolfFound && mouseFound && bearFound && plantFound)) {
             Entity anAnimal = it.next();
-            if(anAnimal instanceof Rabbit rabbit) {
-                if(rabbit.isAlive()) {
-                    rabbitFound = true;
+            if(anAnimal instanceof Deer deer) {
+                if(deer.isAlive()) {
+                    deerFound = true;
                 }
             }
-            else if(anAnimal instanceof Fox fox) {
-                if(fox.isAlive()) {
-                    foxFound = true;
+            else if(anAnimal instanceof Wolf wolf) {
+                if(wolf.isAlive()) {
+                    wolfFound = true;
+                }
+            }
+            else if(anAnimal instanceof Mouse mouse) {
+                if(mouse.isAlive()) {
+                    mouseFound = true;
+                }
+            }
+            else if(anAnimal instanceof Bear bear) {
+                if(bear.isAlive()) {
+                    bearFound = true;
+                }
+            }
+            else if(anAnimal instanceof Plant plant) {
+                if(plant.isAlive()) {
+                    plantFound = true;
                 }
             }
         }
-        return rabbitFound && foxFound;
+        return deerFound && wolfFound && mouseFound && bearFound && plantFound;
     }
     
     /**

@@ -57,6 +57,8 @@
     protected double getBreedingProbability() {
         return BREEDING_PROBABILITY;
     }
+    
+
 
     protected int getBreedingAge() {
         return BREEDING_AGE;
@@ -90,9 +92,9 @@
         }
     }
     
-    protected void getCured(){
-        //20% chance every step of disease being cured.
-        if(rand.nextDouble()<=0.2){
+    protected void getCured(double probabilityOfBeingCured){
+        //% chance every step of disease being cured.
+        if(rand.nextDouble()<=probabilityOfBeingCured){
             infected = false;
         }
     }

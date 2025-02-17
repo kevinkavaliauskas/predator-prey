@@ -14,12 +14,16 @@ public class Simulator {
     private static final int DEFAULT_WIDTH = 120;
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
-    // The probability that a fox will be created in any given grid position.
-    private static final double FOX_CREATION_PROBABILITY = 0.06;
+    // The probability that a wolf will be created in any given grid position.
+    private static final double WOLF_CREATION_PROBABILITY = 0.06;
     // The probability that a rabbit will be created in any given position.
-    private static final double RABBIT_CREATION_PROBABILITY = 0.16;
+    private static final double DEER_CREATION_PROBABILITY = 0.16;
     // The probability that a plant will be created in any given position.
     private static final double PLANT_CREATION_PROBABILITY = 0.20;
+    // The probability that a Bear will be created in any given position.
+    private static final double BEAR_CREATION_PROBABILITY = 0.24;
+    // The probability that a plant will be created in any given position.
+    private static final double MOUSE_CREATION_PROBABILITY = 0.28;
 
     // The Current State of Day/Night. Changes To true if day, changes
     // to false if night.
@@ -160,18 +164,26 @@ public class Simulator {
                 double probability = rand.nextDouble(); // Generate one random number
                 Location location = new Location(row, col);
 
-                if (probability <= FOX_CREATION_PROBABILITY) {
-                    Fox fox = new Fox(true, location, false);
-                    field.placeAnimal(fox, location);
-                } else if (probability <= (FOX_CREATION_PROBABILITY + RABBIT_CREATION_PROBABILITY)) {
-                    Rabbit rabbit = new Rabbit(true, location, false);
-                    field.placeAnimal(rabbit, location);
-                } else if (probability <= (FOX_CREATION_PROBABILITY + RABBIT_CREATION_PROBABILITY
-                        + PLANT_CREATION_PROBABILITY)) {
+                if (probability <= WOLF_CREATION_PROBABILITY) {
+                    Wolf wolf = new Wolf(true, location, false);
+                    field.placeAnimal(wolf, location);
+                } 
+                else if (probability <= (WOLF_CREATION_PROBABILITY + DEER_CREATION_PROBABILITY)) {
+                    Deer deer = new Deer(true, location, false);
+                    field.placeAnimal(deer, location);
+                } 
+                else if (probability <= (WOLF_CREATION_PROBABILITY + DEER_CREATION_PROBABILITY + PLANT_CREATION_PROBABILITY)) {
                     Plant plant = new Plant(true, location, true);
                     field.placeAnimal(plant, location);
-                    // else leave the location empty.
-
+            
+                }
+                else if (probability <= (WOLF_CREATION_PROBABILITY + DEER_CREATION_PROBABILITY + PLANT_CREATION_PROBABILITY + BEAR_CREATION_PROBABILITY)) {
+                    Bear bear = new Bear(true, location, false);
+                    field.placeAnimal(bear, location);
+                }
+                else if (probability <= (WOLF_CREATION_PROBABILITY + DEER_CREATION_PROBABILITY + PLANT_CREATION_PROBABILITY + BEAR_CREATION_PROBABILITY + MOUSE_CREATION_PROBABILITY)) {
+                    Mouse mouse = new Mouse(true, location, false);
+                    field.placeAnimal(mouse, location);
                 }
             }
         }

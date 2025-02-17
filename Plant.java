@@ -14,7 +14,7 @@ public class Plant extends Entity
     // Number of steps since last rain weather
     private int lastRain = 0;
     //The Max height a plant can grow too.
-    private int maxHeight = 3;
+    private int maxHeight = 5;
     
     
 
@@ -50,14 +50,10 @@ public class Plant extends Entity
             lastRain = 0;
         }
         
-        if (weather.equals("tornado") || weather.equals("lightning")) {
-            // 10% chance of a plant dying due to extreme weather
-            if (Math.random() < 0.1) {
-                setDead();
-                return;
-            }
-        }
-        else if (weather.equals("sunny") || weather.equals("rain") && lastRain < 100){
+        //10% chance of entity dying to extreme weather.
+        deathToExtremeWeather(weather);
+        
+        if (weather.equals("sunny") || weather.equals("rain") && lastRain < 100){
             // Plants can only grow in sun or rain
             grow();
         }

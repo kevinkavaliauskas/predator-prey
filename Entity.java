@@ -25,6 +25,16 @@ public abstract class Entity
         this.location = location;
     }
     
+    protected void deathToExtremeWeather(String weather){
+        if (weather.equals("tornado") || weather.equals("lightning") || weather.equals("snow")) {
+            // 10% chance of an entity dying due to extreme weather
+            if (Math.random() < 0.1) {
+                setDead();
+                return;
+            }
+        }
+    }
+    
     /**
      * Act.
      * @param currentField The current state of the field.
