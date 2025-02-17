@@ -19,7 +19,7 @@ public class Mouse extends Animal {
      * @param location  The location within the field.
      */
     public Mouse(boolean randomAge, Location location, boolean infected) {
-        super(location, 5, 20, 0.32, 12, infected); // Constructor of Animal class for rabbit class
+        super(location, 5, 20, 0.4, 12, infected); // Constructor of Animal class for rabbit class
         
         if (randomAge) {
             setAge(rand.nextInt(MAX_AGE));

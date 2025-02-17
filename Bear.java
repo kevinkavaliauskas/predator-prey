@@ -30,7 +30,7 @@ public class Bear extends Animal
      */
     public Bear(boolean randomAge, Location location, boolean infected)
     {
-        super(location, 5, 150, 1, 8, infected);
+        super(location, 5, 150, 0.7, 8, infected);
         
         if(randomAge) {
             setAge(rand.nextInt(MAX_AGE));

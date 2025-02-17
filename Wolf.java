@@ -28,7 +28,7 @@ public class Wolf extends Animal
      */
     public Wolf(boolean randomAge, Location location, boolean infected)
     {
-        super(location, 5, 150, 1, 8, infected);
+        super(location, 3, 350, 1, 8, infected);
         
         if(randomAge) {
             setAge(rand.nextInt(MAX_AGE));

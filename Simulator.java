@@ -15,13 +15,13 @@ public class Simulator {
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
     // The probability that a wolf will be created in any given grid position.
-    private static final double WOLF_CREATION_PROBABILITY = 0.06;
+    private static final double WOLF_CREATION_PROBABILITY = 0.19;
     // The probability that a rabbit will be created in any given position.
     private static final double DEER_CREATION_PROBABILITY = 0.16;
     // The probability that a plant will be created in any given position.
     private static final double PLANT_CREATION_PROBABILITY = 0.20;
     // The probability that a Bear will be created in any given position.
-    private static final double BEAR_CREATION_PROBABILITY = 0.24;
+    private static final double BEAR_CREATION_PROBABILITY = 0.06;
     // The probability that a plant will be created in any given position.
     private static final double MOUSE_CREATION_PROBABILITY = 0.28;
 
@@ -127,7 +127,7 @@ public class Simulator {
                     double probability = Randomizer.getRandom().nextDouble(); // Generate one random number
                     // If the probability is less than the plant creation probability, create a
                     // plant
-                    if (probability <= (PLANT_CREATION_PROBABILITY)/10) {
+                    if (probability <= (PLANT_CREATION_PROBABILITY) / 10) {
                         Plant plant = new Plant(true, location, false);
                         nextFieldState.placeAnimal(plant, location);
                     }
@@ -167,21 +167,20 @@ public class Simulator {
                 if (probability <= WOLF_CREATION_PROBABILITY) {
                     Wolf wolf = new Wolf(true, location, false);
                     field.placeAnimal(wolf, location);
-                } 
-                else if (probability <= (WOLF_CREATION_PROBABILITY + DEER_CREATION_PROBABILITY)) {
+                } else if (probability <= (WOLF_CREATION_PROBABILITY + DEER_CREATION_PROBABILITY)) {
                     Deer deer = new Deer(true, location, false);
                     field.placeAnimal(deer, location);
-                } 
-                else if (probability <= (WOLF_CREATION_PROBABILITY + DEER_CREATION_PROBABILITY + PLANT_CREATION_PROBABILITY)) {
+                } else if (probability <= (WOLF_CREATION_PROBABILITY + DEER_CREATION_PROBABILITY
+                        + PLANT_CREATION_PROBABILITY)) {
                     Plant plant = new Plant(true, location, true);
                     field.placeAnimal(plant, location);
-            
-                }
-                else if (probability <= (WOLF_CREATION_PROBABILITY + DEER_CREATION_PROBABILITY + PLANT_CREATION_PROBABILITY + BEAR_CREATION_PROBABILITY)) {
+
+                } else if (probability <= (WOLF_CREATION_PROBABILITY + DEER_CREATION_PROBABILITY
+                        + PLANT_CREATION_PROBABILITY + BEAR_CREATION_PROBABILITY)) {
                     Bear bear = new Bear(true, location, false);
                     field.placeAnimal(bear, location);
-                }
-                else if (probability <= (WOLF_CREATION_PROBABILITY + DEER_CREATION_PROBABILITY + PLANT_CREATION_PROBABILITY + BEAR_CREATION_PROBABILITY + MOUSE_CREATION_PROBABILITY)) {
+                } else if (probability <= (WOLF_CREATION_PROBABILITY + DEER_CREATION_PROBABILITY
+                        + PLANT_CREATION_PROBABILITY + BEAR_CREATION_PROBABILITY + MOUSE_CREATION_PROBABILITY)) {
                     Mouse mouse = new Mouse(true, location, false);
                     field.placeAnimal(mouse, location);
                 }

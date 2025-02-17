@@ -1,0 +1,27 @@
+#BlueJ class context
+comment0.target=Bear
+comment0.text=\n\ A\ simple\ model\ of\ a\ Bear.\n\ Bear\ age,\ move,\ eat\ rabbits,\ and\ die.\n\ \n\ @author\ David\ J.\ Barnes\ and\ Michael\ K\u00F6lling\n\ @version\ 7.1\n
+comment1.params=randomAge\ location\ infected
+comment1.target=Bear(boolean,\ Location,\ boolean)
+comment1.text=\n\ Create\ a\ Bear.\ A\ Bear\ can\ be\ created\ as\ a\ new\ born\ (age\ zero\n\ and\ not\ hungry)\ or\ with\ a\ random\ age\ and\ food\ level.\n\ \n\ @param\ randomAge\ If\ true,\ the\ Bear\ will\ have\ random\ age\ and\ hunger\ level.\n\ @param\ location\ The\ location\ within\ the\ field.\n
+comment2.params=currentField\ isDay
+comment2.target=void\ spreadDisease(Field,\ boolean)
+comment3.params=currentField\ nextFieldState\ isDay\ weather
+comment3.target=void\ act(Field,\ Field,\ java.lang.Boolean,\ java.lang.String)
+comment3.text=\n\ This\ is\ what\ the\ Bear\ does\ most\ of\ the\ time\:\ it\ hunts\ for\n\ Deer.\ In\ the\ process,\ it\ might\ breed,\ die\ of\ hunger,\n\ or\ die\ of\ old\ age.\n\ @param\ currentField\ The\ field\ currently\ occupied.\n\ @param\ nextFieldState\ The\ updated\ field.\n
+comment4.params=
+comment4.target=java.lang.String\ toString()
+comment5.params=field\ isDay\ weather
+comment5.target=Location\ findFood(Field,\ boolean,\ java.lang.String)
+comment5.text=\n\ Look\ for\ Deer\ adjacent\ to\ the\ current\ location.\n\ Only\ the\ first\ live\ Deer\ is\ eaten.\n\ @param\ field\ The\ field\ currently\ occupied.\n\ @return\ Where\ food\ was\ found,\ or\ null\ if\ it\ wasn't.\n
+comment6.params=currentField
+comment6.target=Location\ isMaleNearby(Field)
+comment7.params=isDay
+comment7.target=int\ breed(boolean)
+comment7.text=\n\ Generate\ a\ number\ representing\ the\ number\ of\ births,\n\ if\ it\ can\ breed.\n\ @return\ The\ number\ of\ births\ (may\ be\ zero).\n
+comment8.params=isDay
+comment8.target=boolean\ canBreed(boolean)
+comment8.text=\n\ A\ Bear\ can\ breed\ if\ it\ has\ reached\ the\ breeding\ age\ and\ if\ the\ time\ of\ day\ currently\ is\ night.\n
+comment9.params=loc\ maleLocation\ field
+comment9.target=Animal\ createChild(Location,\ Location,\ Field)
+numComments=10
