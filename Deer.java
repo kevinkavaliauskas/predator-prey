@@ -20,6 +20,8 @@ public class Deer extends Animal {
     public Deer(boolean randomAge, Location location, boolean infected) {
         super(location, 1, 20, 0.9, 12, infected); // Constructor of Animal class for Deer class
 
+        //When originally spawned, all animals are given a random age, however 
+        //when they are birthed within the simulation, they are assigned 0.
         if (randomAge) {
             setAge(rand.nextInt(MAX_AGE));
         }
@@ -32,6 +34,8 @@ public class Deer extends Animal {
      * 
      * @param currentField   The field currently occupied.
      * @param nextFieldState The field to update.
+     * @param isDay The current Day/Night
+     * param weather The Current Weather
      */
     public void act(Field currentField, Field nextFieldState, Boolean isDay, String weather) {
         incrementAge();
@@ -94,6 +98,15 @@ public class Deer extends Animal {
 
     }
 
+    /**
+     * This is how the deer finds food.
+     * Looks for plants within a 1-tile radius.
+     * The first live plant is eaten
+     * @param field The field currently occupied.
+     * @param isDay The current Day/Night
+     * @param weather The current Weather
+     * @return Where food was found, or null if it wasn't.
+     */
     protected Location findFood(Field field, boolean isDay, String weather) {
         List<Location> adjacent;
 
@@ -115,7 +128,13 @@ public class Deer extends Animal {
         }
         return foodLocation;
     }
-
+    
+    /**
+     * Checks adjacent locations to see if there is a male Deer nearby for breeding.
+     * 
+     * @param currentField The field currently occupied.
+     * @return Location of a nearby male Deer, or null if none found.
+     */
     protected Location isMaleNearby(Field currentField) {
         List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation(), 1); // Gets all adjacent
                                                                                                 // locations to check if
@@ -132,7 +151,14 @@ public class Deer extends Animal {
         }
         return null;
     }
-
+    
+    /**
+     * Spreads disease to nearby deer within a 1-tile radius.
+     * Disease has a higher chance of spreading during the day than at night.
+     * 
+     * @param currentField The field currently occupied.
+     * @param isDay Indicates if it is currently daytime.
+     */
     protected void spreadDisease(Field currentField, boolean isDay) {
         List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation(), 1); // Get all adjacent
                                                                                                 // location to check if
@@ -181,6 +207,7 @@ public class Deer extends Animal {
     /**
      * Generate a number representing the number of births,
      * if it can breed.
+     * @param isDay The current day/night
      * 
      * @return The number of births (may be zero).
      */
@@ -194,13 +221,14 @@ public class Deer extends Animal {
     }
 
     /**
-     * A Deer can breed if it has reached the breeding age.
+     * A Deer can breed if it has reached the breeding age and if it is daytime.
      * 
+     * @param isDay the current day/night cycle.
      * @return true if the Deer can breed, false otherwise.
      */
     @Override
     protected boolean canBreed(boolean isDay) {
-        if (age >= BREEDING_AGE && isDay) { // Deers can only breed at night
+        if (age >= BREEDING_AGE && isDay) { // Deers can only breed at day
             return true;
         } else {
             return false;
@@ -210,9 +238,9 @@ public class Deer extends Animal {
     /**
      * Creates a new young Deer
      * 
-     * @param loc          The location for the new Deer
+     * @param loc  The location for the new Deer
      * @param maleLocation Location of the male parent
-     * @param field        The current field
+     * @param field The current field
      * @return A new young Deer
      */
     @Override
@@ -232,12 +260,15 @@ public class Deer extends Animal {
         double maleBreedingProbability = male.getBreedingProbability();
         int maleBreedingAge = male.getBreedingAge();
         int maleMaxLitterSize = male.getMaxLitterSize();
-
+        
+        //Childs properties are the average of the parents properties.
         double newBreedingProbability = (getBreedingProbability() + maleBreedingProbability) / 2;
         int newBreedingAge = (getBreedingAge() + maleBreedingAge) / 2;
         int newMaxLitterSize = (getMaxLitterSize() + maleMaxLitterSize) / 2;
 
         // Handle mutations
+        //2% chance of a positive mutation to triple properties
+        //2% chance of a negative mutation to give a third of the properties.
         double mutationChance = rand.nextDouble();
         if (mutationChance <= 0.02) {
             newBreedingProbability *= 3;

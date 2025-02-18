@@ -165,7 +165,6 @@ public class Simulator {
 
                 double probability = rand.nextDouble(); // Generate one random number
                 Location location = new Location(row, col);
-
                 if (probability <= WOLF_CREATION_PROBABILITY) {
                     Wolf wolf = new Wolf(true, location, false);
                     field.placeEntity(wolf, location);
