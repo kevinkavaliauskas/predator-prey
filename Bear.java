@@ -73,7 +73,7 @@ public class Bear extends Animal
         //Can only get cured if infected, will always be infected for at least one step.
         if(infected){
             //Every turn infected, their max age will decrease by 10%.
-            MAX_AGE = (int)(0.95 * MAX_AGE);
+            MAX_AGE = (int)(0.9 * MAX_AGE);
             
             //Bears hibernate if the weather is snowing, and if they hibernate they have a 100% chance of getting cured.
             if(weather.equals("snow")){
@@ -111,7 +111,7 @@ public class Bear extends Animal
             
             Location nextLocation;
             //Bear cannot find food during snow.
-            if(!(weather.equals("snow")) && !isDay){ //Bears can only hunt in the night
+            if(!(weather.equals("snow")) && !isDay && !infected){ //Bears can only hunt in the night, if the weather is not snowy and they are not infected
                 nextLocation = findFood(currentField, isDay, weather);
             }
             //Hibernates during snow.
@@ -165,11 +165,11 @@ public class Bear extends Animal
         List<Location> adjacent;
         Location foodLocation;
         if (foodLevel <15){
-            if (!isDay && (weather.equals("sunny"))){ //Bear can check 2 steps if it is day and if the weather is good.
-                adjacent = field.getAdjacentLocations(getLocation(), 2); //Bear can check for food 2 steps at night.
+            if (!isDay && (weather.equals("sunny"))){ //Bear can check 2 tile radius if it is night and if the weather is good
+                adjacent = field.getAdjacentLocations(getLocation(), 2); 
             }
             else{
-                adjacent = field.getAdjacentLocations(getLocation(), 1); //During day they can only check 1 step.
+                adjacent = field.getAdjacentLocations(getLocation(), 1); //if the weather is bad they can only check 1 tile radius
             }
             Iterator<Location> it = adjacent.iterator();
             foodLocation = null;

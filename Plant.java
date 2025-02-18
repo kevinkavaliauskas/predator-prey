@@ -53,7 +53,8 @@ public class Plant extends Entity
         //10% chance of entity dying to extreme weather.
         deathToExtremeWeather(weather);
         
-        if (weather.equals("sunny") || weather.equals("rain") && lastRain < 100){
+        //It needs to have rained in the last 15 steps to allow plants to grow.
+        if (weather.equals("sunny") || weather.equals("rain") && lastRain < 15){
             // Plants can only grow in sun or rain
             grow();
         }
