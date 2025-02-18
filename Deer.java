@@ -5,7 +5,8 @@ import java.util.Iterator;
  * A simple model of a Deer.
  * Deers age, move, breed, and die.
  * 
- * @author David J. Barnes and Michael Kölling
+ * @author David J. Barnes and Michael Kölling and Aashwin Eldo and Kevin
+ *         Kavaliauskas
  * @version 7.1
  */
 public class Deer extends Animal {
@@ -16,16 +17,17 @@ public class Deer extends Animal {
      * 
      * @param randomAge If true, the Deer will have random age.
      * @param location  The location within the field.
+     * @param infected Whether or not the animal is infected.
      */
     public Deer(boolean randomAge, Location location, boolean infected) {
-        super(location, 1, 20, 0.9, 12, infected); // Constructor of Animal class for Deer class
+        super(location, 1, 20, 0.9, 12, infected); // Constructor for animal class(location, breeding age, maximum age, breeding probability, max litter size, infected status)
 
         //When originally spawned, all animals are given a random age, however 
         //when they are birthed within the simulation, they are assigned 0.
         if (randomAge) {
             setAge(rand.nextInt(MAX_AGE));
         }
-        foodLevel = rand.nextInt(20);
+        foodLevel = rand.nextInt(20); //When created will randomly assign them a random food value.
     }
 
     /**
@@ -35,7 +37,7 @@ public class Deer extends Animal {
      * @param currentField   The field currently occupied.
      * @param nextFieldState The field to update.
      * @param isDay The current Day/Night
-     * param weather The Current Weather
+     * @param weather The Current Weather
      */
     public void act(Field currentField, Field nextFieldState, Boolean isDay, String weather) {
         incrementAge();

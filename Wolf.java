@@ -5,7 +5,8 @@ import java.util.Iterator;
  * A simple model of a Wolf.
  * Wolf age, move, eat Deer, and die.
  * 
- * @author David J. Barnes and Michael Kölling
+ * @author David J. Barnes and Michael Kölling and Aashwin Eldo and Kevin
+ *         Kavaliauskas
  * @version 7.1
  */
 public class Wolf extends Animal
@@ -25,18 +26,28 @@ public class Wolf extends Animal
      * 
      * @param randomAge If true, the Wolf will have random age and hunger level.
      * @param location The location within the field.
+     * @param infected Whether or not the animal is infected.
      */
     public Wolf(boolean randomAge, Location location, boolean infected)
     {
-        super(location, 3, 350, 1, 8, infected);
+        super(location, 3, 350, 1, 8, infected); //Constructor for animal class(location, breeding age, maximum age, breeding probability, max litter size, infected status)
         
+        //When originally spawned, all animals are given a random age, however 
+        //when they are birthed within the simulation, they are assigned 0.
         if(randomAge) {
             setAge(rand.nextInt(MAX_AGE));
         }
         
-        foodLevel = rand.nextInt(DEER_FOOD_VALUE);
+        foodLevel = rand.nextInt(DEER_FOOD_VALUE); //When created will randomly assign them a random food value.
     }
     
+    /**
+     * Spreads disease to nearby deer within a 1-tile radius.
+     * Disease has a higher chance of spreading during the day than at night.
+     * 
+     * @param currentField The field currently occupied.
+     * @param isDay Indicates if it is currently daytime.
+     */
     protected void spreadDisease(Field currentField, boolean isDay){
         List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation(), 1); //Get all adjacent location to check if their are any of the same species within
                                                                                                        // the same radius. To see who disease can be spread to.
@@ -59,8 +70,10 @@ public class Wolf extends Animal
      * This is what the Wolf does most of the time: it hunts for
      * Deer. In the process, it might breed, die of hunger,
      * or die of old age.
-     * @param currentField The field currently occupied.
-     * @param nextFieldState The updated field.
+     * @param currentField   The field currently occupied.
+     * @param nextFieldState The field to update.
+     * @param isDay The current Day/Night
+     * @param weather The Current Weather
      */
     protected void act(Field currentField, Field nextFieldState, Boolean isDay, String weather)
     {
@@ -134,16 +147,18 @@ public class Wolf extends Animal
     
     
     /**
-     * Look for Deer adjacent to the current location.
-     * Only the first live Deer is eaten.
+     * Look for Deer and Mice adjacent to the current location.
+     * Only the first live Deer/Mice is eaten.
      * @param field The field currently occupied.
+     * @param isDay The current Day/Night
+     * @param weather The current Weather
      * @return Where food was found, or null if it wasn't.
      */
     protected Location findFood(Field field, boolean isDay, String weather)
     {
         List<Location> adjacent;
         Location foodLocation;
-        if (foodLevel <15){
+        if (foodLevel <15){ //Wolves only eat when below a food level of 15
             if (!isDay && (weather.equals("sunny"))){ //Wolf can check 2 steps if it is night and if the weather is good.
                 adjacent = field.getAdjacentLocations(getLocation(), 2); 
             }
@@ -175,7 +190,7 @@ public class Wolf extends Animal
                 }
             }
         }
-        //Will move to a random location if above the 17 food level
+        //Will move to a random location if above the 15 food level
         else{
             List<Location> freeAdjacent = field.getFreeAdjacentLocations(getLocation(), 1);
             if (!freeAdjacent.isEmpty()) {
@@ -191,7 +206,12 @@ public class Wolf extends Animal
         return foodLocation;
     }
     
-    
+    /**
+     * Checks adjacent locations to see if there is a male wolf nearby for breeding.
+     * 
+     * @param currentField The field currently occupied.
+     * @return Location of a nearby male wolf, or null if none found.
+     */
     protected Location isMaleNearby(Field currentField) {
         List<Location> adjacentLocations = currentField.getAdjacentLocations(getLocation(), 1); // Gets all adjacent
                                                                                              // locations to check if
@@ -214,6 +234,8 @@ public class Wolf extends Animal
     /**
      * Generate a number representing the number of births,
      * if it can breed.
+     * @param isDay The current day/night
+     * 
      * @return The number of births (may be zero).
      */
     protected int breed(boolean isDay)
@@ -230,6 +252,7 @@ public class Wolf extends Animal
 
     /**
      * A Wolf can breed if it has reached the breeding age and if the time of day currently is night.
+     * @param isDay The current Day/Night
      */
     protected boolean canBreed(boolean isDay)
     {
@@ -241,6 +264,14 @@ public class Wolf extends Animal
         }
     }
     
+    /**
+     * Creates a new young Deer
+     * 
+     * @param loc  The location for the new wolf
+     * @param maleLocation Location of the male parent
+     * @param field The current field
+     * @return A new young wolf
+     */
     protected Animal createChild(Location loc, Location maleLocation, Field field) {
         // Get male Wolf
         Wolf male = null;
